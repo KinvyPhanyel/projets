@@ -1,0 +1,12 @@
+[Unit]
+Description=Run portfolio maintenance once a day (Douala time)
+
+[Timer]
+OnCalendar=*-*-* 19:00:00 Africa/Douala
+Persistent=true
+RandomizedDelaySec=15min
+AccuracySec=1min
+Unit=portfolio-maintenance.service
+
+[Install]
+WantedBy=timers.target

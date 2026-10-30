@@ -1,0 +1,9 @@
+{
+  "repository": "/home/UTILISATEUR/.local/state/portfolio-agent/repository",
+  "state_directory": "/home/UTILISATEUR/.local/state/portfolio-agent/runtime",
+  "branch": "portfolio-projets",
+  "author_name": "Votre nom GitHub",
+  "author_email": "ADRESSE_VERIFIEE_OU_NOREPLY_GITHUB",
+  "timezone": "Africa/Douala",
+  "retention_days": 90
+}

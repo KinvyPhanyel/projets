@@ -80,4 +80,4 @@ docs/            publication, progression et choix des sujets
 
 Voir [l'architecture et les limites du laboratoire](docs/LAB.md), [la matrice des fonctions](docs/FEATURE_MATRIX.md), [le guide de publication](docs/PUBLICATION.md) et [le parcours d'apprentissage](docs/LEARNING_PATH.md).
 
-Le serveur personnel, l'agent quotidien et YouTube restent hors de cette étape. Le code peut être public ou privé indépendamment d'une future vitrine ; aucune publication de site n'est effectuée ici.
+Un [agent de maintenance quotidienne](automation/daily/README.md) est disponible avec timer systemd, limites de ressources, reprise de push et rapports de contrôles réels. Son installation sur un serveur doit être vérifiée séparément. YouTube reste hors de cette étape. Le code peut être public ou privé indépendamment d'une future vitrine ; aucune publication de site n'est effectuée ici.

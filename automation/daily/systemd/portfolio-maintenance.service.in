@@ -1,0 +1,29 @@
+[Unit]
+Description=Portfolio daily functional verification and report publication
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=6h
+StartLimitBurst=4
+
+[Service]
+Type=oneshot
+User=@USER@
+WorkingDirectory=@REPO@
+ExecStart=/usr/bin/python3 @REPO@/automation/daily/agent.py --config @CONFIG@
+Environment=GIT_TERMINAL_PROMPT=0
+Environment=PYTHONDONTWRITEBYTECODE=1
+Nice=15
+CPUQuota=25%
+MemoryMax=256M
+TasksMax=48
+TimeoutStartSec=8min
+Restart=on-failure
+RestartSec=15min
+RestartPreventExitStatus=20
+KillMode=control-group
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=@STATE@
+UMask=0077

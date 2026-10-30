@@ -3,6 +3,7 @@
   "projects_checked": 22,
   "unit_tests_passed": 72,
   "lab_tests_passed": 8,
+  "maintenance_tests_passed": 12,
   "checks": {
     "sentinel-log": {
       "passed": 3

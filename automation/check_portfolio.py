@@ -56,6 +56,28 @@ def verify(output=None, export_examples=False):
         raise RuntimeError("Lab integration tests failed\n" + lab.stderr)
     lab_count = int(lab_match[1])
     print(f"HTTP lab: {lab_count} integration tests passed", file=sys.stderr)
+    maintenance = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "automation/daily",
+            "-p",
+            "test_*.py",
+            "-v",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=45,
+    )
+    maintenance_match = re.search(r"Ran (\d+) tests?", maintenance.stderr)
+    if maintenance.returncode or not maintenance_match or int(maintenance_match[1]) == 0:
+        raise RuntimeError("Maintenance integration tests failed\n" + maintenance.stderr)
+    maintenance_count = int(maintenance_match[1])
+    print(f"Maintenance: {maintenance_count} tests passed", file=sys.stderr)
     baseline = check_basics()
     server = ThreadingHTTPServer(
         ("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT / "site"))
@@ -118,6 +140,7 @@ def verify(output=None, export_examples=False):
         "projects_checked": len(results),
         "unit_tests_passed": total,
         "lab_tests_passed": lab_count,
+        "maintenance_tests_passed": maintenance_count,
         "checks": tests,
         "baseline_checks": baseline["projects_checked"],
         "results": results,
@@ -140,6 +163,7 @@ if __name__ == "__main__":
                 "projects_checked": report["projects_checked"],
                 "unit_tests_passed": report["unit_tests_passed"],
                 "lab_tests_passed": report["lab_tests_passed"],
+                "maintenance_tests_passed": report["maintenance_tests_passed"],
             },
             indent=2,
         )
