@@ -1,0 +1,37 @@
+{
+  "stock": [
+    {
+      "warehouse": "campus",
+      "sku": "keyboard",
+      "quantity": 6
+    },
+    {
+      "warehouse": "centre",
+      "sku": "keyboard",
+      "quantity": 4
+    }
+  ],
+  "audit": [
+    {
+      "seq": 1,
+      "operation": "receipt-1",
+      "warehouse": "campus",
+      "sku": "keyboard",
+      "delta": 10
+    },
+    {
+      "seq": 2,
+      "operation": "transfer-1",
+      "warehouse": "centre",
+      "sku": "keyboard",
+      "delta": 4
+    },
+    {
+      "seq": 3,
+      "operation": "transfer-1",
+      "warehouse": "campus",
+      "sku": "keyboard",
+      "delta": -4
+    }
+  ]
+}

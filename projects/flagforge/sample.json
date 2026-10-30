@@ -1,0 +1,36 @@
+{
+  "flags": {
+    "new-search": {
+      "enabled": true,
+      "rollout": 30,
+      "rules": [
+        {
+          "attribute": "plan",
+          "op": "eq",
+          "value": "beta",
+          "result": true
+        }
+      ]
+    }
+  },
+  "contexts": [
+    {
+      "flag": "new-search",
+      "subject": "alice",
+      "attributes": {
+        "plan": "beta"
+      }
+    },
+    {
+      "flag": "new-search",
+      "subject": "bob",
+      "attributes": {
+        "plan": "free"
+      }
+    },
+    {
+      "flag": "missing",
+      "subject": "alice"
+    }
+  ]
+}

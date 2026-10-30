@@ -1,0 +1,26 @@
+{
+  "alerts": [
+    {
+      "rule": "password_spray",
+      "severity": "high",
+      "ip": "192.0.2.10",
+      "users": 3
+    },
+    {
+      "rule": "brute_force",
+      "severity": "medium",
+      "ip": "192.0.2.10",
+      "user": "alice",
+      "count": 3
+    },
+    {
+      "rule": "success_after_failures",
+      "severity": "high",
+      "ip": "192.0.2.10",
+      "user": "alice",
+      "failures": 3
+    }
+  ],
+  "events_processed": 6,
+  "events_ignored": 0
+}

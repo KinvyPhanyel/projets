@@ -35,3 +35,14 @@ Faux positifs, diversité des horodatages, cardinalité des adresses et données
 ## Limites du livrable
 
 Les règles sont heuristiques. Aucun blocage réseau ni collecte de secrets. Les événements doivent avoir des horodatages compatibles.
+
+
+## Approfondissement implémenté
+
+Le module avancé normalise les dates en instants et trie les événements, y compris des fuseaux différents. Une deque par couple IP/utilisateur détecte la brute force ; une seconde par IP compte les utilisateurs distincts pour le spraying. Un succès après le seuil émet une alerte de sévérité élevée puis réinitialise les échecs du couple.
+
+Les règles brute force et spray restent désarmées tant que le seuil reste franchi, pour éviter une alerte par ligne. Les réseaux de confiance CIDR sont filtrés avant corrélation et le compteur d'événements ignorés est exposé. L'identité d'un utilisateur et les événements doivent venir de journaux fiables.
+
+L'algorithme est un traitement de lot : tri O(n log n), mémoire liée aux clés et événements retenus. Les utilisateurs distincts sont recomptés à chaque événement, ce qui est coûteux pour une IP très active. Il n'y a pas de stockage persistant, de gestion de retard en flux ou de notification. Les tests couvrent les trois règles et le filtre CIDR.
+
+Les sections antérieures décrivent le premier `app.py`. Les fonctions de cette section sont livrées dans `advanced.py`.

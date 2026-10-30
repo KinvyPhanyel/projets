@@ -34,3 +34,14 @@ Devise, remboursements, arrondis, plafonds absents et confidentialité des dépe
 ## Limites du livrable
 
 Montants dans une seule devise choisie par l’utilisateur ; pas de connexion bancaire ni de conseil financier.
+
+
+## Approfondissement implémenté
+
+Les transactions distinguent income, expense et refund. Une dépense et un remboursement sont saisis comme montants non négatifs ; le sens est porté par kind, ce qui évite des doubles négations. Les montants utilisent Decimal et refusent plus de deux décimales.
+
+Le rapport inclut uniquement les dates du mois de as_of jusqu'à cette date. Il affiche la dépense nette, le reste du plafond, les revenus et le flux net. Les catégories budgétées sans dépenses restent visibles. La projection extrapole la moyenne journalière à la durée réelle du mois, y compris février bissextile.
+
+Cette projection n'est pas un modèle prédictif : elle ignore les charges à venir et peut être négative si les remboursements dépassent les dépenses du mois. Les tests contrôlent filtrage temporel, remboursement et précision monétaire. Pas de multi-devise ni de connexion bancaire.
+
+Les sections antérieures décrivent le premier `app.py`. Les fonctions de cette section sont livrées dans `advanced.py`.

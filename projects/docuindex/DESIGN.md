@@ -32,3 +32,14 @@ Accents, synonymes, longueur des documents, classement lexical et différence av
 ## Limites du livrable
 
 Recherche lexicale explicable, sans LLM, embeddings ou compréhension sémantique. Charge les documents en mémoire.
+
+
+## Approfondissement implémenté
+
+L'index inversé associe un terme aux documents et fréquences. La recherche ne reparcourt donc pas tous les documents pour calculer chaque fréquence documentaire. Le score BM25 utilise k1=1,2 et b=0,75 ; il normalise la longueur sans diviser linéairement la pertinence comme la première version.
+
+Les termes ordinaires utilisent ET ou OU. Les groupes entre guillemets ajoutent un filtre de présence contiguë après tokenisation. L'extrait est un préfixe de 160 caractères, pas un surlignage contextuel. Les égalités sont départagées par identifiant.
+
+L'export JSON versionné conserve les documents et reconstruit l'index à la restauration, afin de ne pas maintenir deux représentations pouvant diverger. Il contient donc le texte en clair. Les tests couvrent expression exacte, absence, mode ET et round-trip. Pas de stemming, analyse linguistique ou mise à jour incrémentale.
+
+Les sections antérieures décrivent le premier `app.py`. Les fonctions de cette section sont livrées dans `advanced.py`.

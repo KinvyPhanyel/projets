@@ -1,0 +1,34 @@
+{
+  "max_weight": 2,
+  "ttl": 10,
+  "commands": [
+    {
+      "action": "put",
+      "key": "a",
+      "value": 1
+    },
+    {
+      "action": "put",
+      "key": "b",
+      "value": 2
+    },
+    {
+      "action": "get",
+      "key": "a"
+    },
+    {
+      "action": "put",
+      "key": "c",
+      "value": 3
+    },
+    {
+      "action": "advance",
+      "seconds": 11
+    },
+    {
+      "action": "get",
+      "key": "a",
+      "fallback": 10
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "events": [
+    {
+      "sensor": "room-A",
+      "timestamp": "2026-10-30T10:00:00Z",
+      "value": 20
+    },
+    {
+      "sensor": "room-A",
+      "timestamp": "2026-10-30T10:00:01Z",
+      "value": 20.1
+    },
+    {
+      "sensor": "room-A",
+      "timestamp": "2026-10-30T10:00:02Z",
+      "value": 20
+    },
+    {
+      "sensor": "room-A",
+      "timestamp": "2026-10-30T10:00:03Z",
+      "value": 50
+    },
+    {
+      "sensor": "room-A",
+      "timestamp": "2026-10-30T10:00:04Z",
+      "value": 51
+    },
+    {
+      "sensor": "room-A",
+      "timestamp": "2026-10-30T10:00:05Z",
+      "value": 20
+    },
+    {
+      "sensor": "room-A",
+      "timestamp": "2026-10-30T10:00:06Z",
+      "value": 20.1
+    }
+  ]
+}

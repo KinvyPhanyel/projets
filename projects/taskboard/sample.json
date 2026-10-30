@@ -1,0 +1,24 @@
+{
+  "commands": [
+    {
+      "action": "create",
+      "id": "T1",
+      "title": "Livrer la recherche",
+      "actor": "alice"
+    },
+    {
+      "action": "transition",
+      "id": "T1",
+      "status": "doing",
+      "version": 1,
+      "actor": "alice"
+    },
+    {
+      "action": "transition",
+      "id": "T1",
+      "status": "review",
+      "version": 2,
+      "actor": "alice"
+    }
+  ]
+}

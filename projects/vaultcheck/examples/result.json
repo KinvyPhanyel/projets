@@ -1,0 +1,9 @@
+{
+  "snapshots": 2,
+  "unique_blobs": 3,
+  "file_references": 4,
+  "restored_content": {
+    "docs/note.txt": "changed",
+    "readme.txt": "hello"
+  }
+}

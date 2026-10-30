@@ -1,0 +1,44 @@
+{
+  "decisions": [
+    {
+      "client": "alice",
+      "at": 0.0,
+      "allowed": true,
+      "remaining": 1,
+      "retry_after": 0,
+      "reason": "accepted"
+    },
+    {
+      "client": "alice",
+      "at": 0.0,
+      "allowed": true,
+      "remaining": 0.0,
+      "retry_after": 0,
+      "reason": "accepted"
+    },
+    {
+      "client": "alice",
+      "at": 0.0,
+      "allowed": false,
+      "remaining": 0.0,
+      "retry_after": 1.0,
+      "reason": "rate_limited"
+    },
+    {
+      "client": "alice",
+      "at": 1.0,
+      "allowed": true,
+      "remaining": 0.0,
+      "retry_after": 0,
+      "reason": "accepted"
+    },
+    {
+      "client": "bob",
+      "at": 1.0,
+      "allowed": true,
+      "remaining": 1,
+      "retry_after": 0,
+      "reason": "accepted"
+    }
+  ]
+}

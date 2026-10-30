@@ -1,0 +1,20 @@
+{
+  "commands": [
+    {
+      "action": "reserve",
+      "id": "R1",
+      "resource": "salle-A",
+      "owner": "alice",
+      "start": "2026-11-02T09:00:00+01:00",
+      "end": "2026-11-02T10:00:00+01:00"
+    },
+    {
+      "action": "reserve",
+      "id": "R2",
+      "resource": "salle-A",
+      "owner": "bob",
+      "start": "2026-11-02T10:00:00+01:00",
+      "end": "2026-11-02T11:00:00+01:00"
+    }
+  ]
+}

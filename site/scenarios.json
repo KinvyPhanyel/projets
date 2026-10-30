@@ -1,0 +1,643 @@
+{
+  "sentinel-log": {
+    "events": [
+      {
+        "timestamp": "2026-10-30T10:00:00+00:00",
+        "ip": "192.0.2.10",
+        "user": "alice",
+        "status": "failed"
+      },
+      {
+        "timestamp": "2026-10-30T10:00:01+00:00",
+        "ip": "192.0.2.10",
+        "user": "bob",
+        "status": "failed"
+      },
+      {
+        "timestamp": "2026-10-30T10:00:02+00:00",
+        "ip": "192.0.2.10",
+        "user": "carol",
+        "status": "failed"
+      },
+      {
+        "timestamp": "2026-10-30T10:00:03+00:00",
+        "ip": "192.0.2.10",
+        "user": "alice",
+        "status": "failed"
+      },
+      {
+        "timestamp": "2026-10-30T10:00:04+00:00",
+        "ip": "192.0.2.10",
+        "user": "alice",
+        "status": "failed"
+      },
+      {
+        "timestamp": "2026-10-30T10:00:09Z",
+        "ip": "192.0.2.10",
+        "user": "alice",
+        "status": "success"
+      }
+    ]
+  },
+  "stockpilot": {
+    "operations": [
+      {
+        "id": "receipt-1",
+        "sku": "keyboard",
+        "quantity": 10,
+        "destination": "campus"
+      },
+      {
+        "id": "transfer-1",
+        "sku": "keyboard",
+        "quantity": 4,
+        "source": "campus",
+        "destination": "centre"
+      },
+      {
+        "id": "transfer-1",
+        "sku": "keyboard",
+        "quantity": 4,
+        "source": "campus",
+        "destination": "centre"
+      }
+    ]
+  },
+  "budgetlens": {
+    "as_of": "2026-10-15",
+    "budgets": {
+      "transport": "15000",
+      "food": "25000"
+    },
+    "transactions": [
+      {
+        "date": "2026-10-01",
+        "kind": "income",
+        "category": "scholarship",
+        "amount": "100000"
+      },
+      {
+        "date": "2026-10-02",
+        "kind": "expense",
+        "category": "transport",
+        "amount": "5000"
+      },
+      {
+        "date": "2026-10-03",
+        "kind": "refund",
+        "category": "transport",
+        "amount": "1000"
+      },
+      {
+        "date": "2026-10-10",
+        "kind": "expense",
+        "category": "food",
+        "amount": "15000"
+      }
+    ]
+  },
+  "docuindex": {
+    "documents": {
+      "security": "La sécurité des données protège les systèmes.",
+      "pipeline": "Un pipeline de données valide les mesures.",
+      "network": "Le réseau transporte des données."
+    },
+    "queries": [
+      {
+        "text": "sécurité données",
+        "mode": "and"
+      },
+      {
+        "text": "\"de données\""
+      }
+    ]
+  },
+  "cleandata": {
+    "unique": "id",
+    "schema": {
+      "id": {
+        "type": "text",
+        "lowercase": true
+      },
+      "temperature": {
+        "type": "number",
+        "min": -50,
+        "max": 100
+      },
+      "timestamp": {
+        "type": "datetime"
+      }
+    },
+    "rows": [
+      {
+        "id": " A ",
+        "temperature": "21.5",
+        "timestamp": "2026-10-30T10:00:00Z"
+      },
+      {
+        "id": "a",
+        "temperature": 22,
+        "timestamp": "2026-10-30T11:00:00Z"
+      },
+      {
+        "id": "b",
+        "temperature": "NaN",
+        "timestamp": "bad"
+      }
+    ]
+  },
+  "pulsewatch": {
+    "targets": [
+      "http://127.0.0.1:8080/",
+      "http://127.0.0.1:8080/absent"
+    ],
+    "attempts": 2,
+    "workers": 2,
+    "timeout": 2
+  },
+  "flowdag": {
+    "workers": 2,
+    "retries": 1,
+    "tasks": {
+      "a": {
+        "operation": "value",
+        "value": 3
+      },
+      "b": {
+        "operation": "value",
+        "value": 4
+      },
+      "total": {
+        "operation": "sum",
+        "depends_on": [
+          "a",
+          "b"
+        ]
+      },
+      "failure": {
+        "operation": "fail"
+      },
+      "downstream": {
+        "operation": "sum",
+        "depends_on": [
+          "failure"
+        ]
+      }
+    }
+  },
+  "routecraft": {
+    "graph": {
+      "campus": {
+        "gare": 4,
+        "centre": 9
+      },
+      "gare": {
+        "centre": -1
+      },
+      "centre": {}
+    },
+    "queries": [
+      {
+        "start": "campus",
+        "end": "centre"
+      },
+      {
+        "start": "campus",
+        "end": "centre",
+        "blocked": [
+          "gare"
+        ]
+      }
+    ]
+  },
+  "sensorscope": {
+    "events": [
+      {
+        "sensor": "room-A",
+        "timestamp": "2026-10-30T10:00:00Z",
+        "value": 20
+      },
+      {
+        "sensor": "room-A",
+        "timestamp": "2026-10-30T10:00:01Z",
+        "value": 20.1
+      },
+      {
+        "sensor": "room-A",
+        "timestamp": "2026-10-30T10:00:02Z",
+        "value": 20
+      },
+      {
+        "sensor": "room-A",
+        "timestamp": "2026-10-30T10:00:03Z",
+        "value": 50
+      },
+      {
+        "sensor": "room-A",
+        "timestamp": "2026-10-30T10:00:04Z",
+        "value": 51
+      },
+      {
+        "sensor": "room-A",
+        "timestamp": "2026-10-30T10:00:05Z",
+        "value": 20
+      },
+      {
+        "sensor": "room-A",
+        "timestamp": "2026-10-30T10:00:06Z",
+        "value": 20.1
+      }
+    ]
+  },
+  "vaultcheck": {
+    "snapshots": [
+      {
+        "id": "v1",
+        "files": {
+          "docs/note.txt": "original",
+          "readme.txt": "hello"
+        }
+      },
+      {
+        "id": "v2",
+        "files": {
+          "docs/note.txt": "changed",
+          "readme.txt": "hello"
+        }
+      }
+    ],
+    "read": "v2"
+  },
+  "taskboard": {
+    "commands": [
+      {
+        "action": "create",
+        "id": "T1",
+        "title": "Livrer la recherche",
+        "actor": "alice"
+      },
+      {
+        "action": "transition",
+        "id": "T1",
+        "status": "doing",
+        "version": 1,
+        "actor": "alice"
+      },
+      {
+        "action": "transition",
+        "id": "T1",
+        "status": "review",
+        "version": 2,
+        "actor": "alice"
+      }
+    ]
+  },
+  "roomguard": {
+    "commands": [
+      {
+        "action": "reserve",
+        "id": "R1",
+        "resource": "salle-A",
+        "owner": "alice",
+        "start": "2026-11-02T09:00:00+01:00",
+        "end": "2026-11-02T10:00:00+01:00"
+      },
+      {
+        "action": "reserve",
+        "id": "R2",
+        "resource": "salle-A",
+        "owner": "bob",
+        "start": "2026-11-02T10:00:00+01:00",
+        "end": "2026-11-02T11:00:00+01:00"
+      }
+    ]
+  },
+  "ledgercore": {
+    "commands": [
+      {
+        "action": "post",
+        "id": "opening",
+        "entries": [
+          {
+            "account": "cash",
+            "amount": 100000
+          },
+          {
+            "account": "capital",
+            "amount": -100000
+          }
+        ]
+      },
+      {
+        "action": "post",
+        "id": "purchase",
+        "entries": [
+          {
+            "account": "equipment",
+            "amount": 25000
+          },
+          {
+            "account": "cash",
+            "amount": -25000
+          }
+        ]
+      }
+    ]
+  },
+  "flagforge": {
+    "flags": {
+      "new-search": {
+        "enabled": true,
+        "rollout": 30,
+        "rules": [
+          {
+            "attribute": "plan",
+            "op": "eq",
+            "value": "beta",
+            "result": true
+          }
+        ]
+      }
+    },
+    "contexts": [
+      {
+        "flag": "new-search",
+        "subject": "alice",
+        "attributes": {
+          "plan": "beta"
+        }
+      },
+      {
+        "flag": "new-search",
+        "subject": "bob",
+        "attributes": {
+          "plan": "free"
+        }
+      },
+      {
+        "flag": "missing",
+        "subject": "alice"
+      }
+    ]
+  },
+  "gatekeeper": {
+    "capacity": 2,
+    "rate": 1,
+    "events": [
+      {
+        "at": 0,
+        "client": "alice"
+      },
+      {
+        "at": 0,
+        "client": "alice"
+      },
+      {
+        "at": 0,
+        "client": "alice"
+      },
+      {
+        "at": 1,
+        "client": "alice"
+      },
+      {
+        "at": 1,
+        "client": "bob"
+      }
+    ]
+  },
+  "eventrail": {
+    "batches": [
+      {
+        "stream": "wallet-alice",
+        "expected_version": 0,
+        "events": [
+          {
+            "type": "deposit",
+            "amount": 100
+          }
+        ]
+      },
+      {
+        "stream": "wallet-alice",
+        "expected_version": 1,
+        "events": [
+          {
+            "type": "withdraw",
+            "amount": 30
+          }
+        ]
+      }
+    ]
+  },
+  "cachecraft": {
+    "max_weight": 2,
+    "ttl": 10,
+    "commands": [
+      {
+        "action": "put",
+        "key": "a",
+        "value": 1
+      },
+      {
+        "action": "put",
+        "key": "b",
+        "value": 2
+      },
+      {
+        "action": "get",
+        "key": "a"
+      },
+      {
+        "action": "put",
+        "key": "c",
+        "value": 3
+      },
+      {
+        "action": "advance",
+        "seconds": 11
+      },
+      {
+        "action": "get",
+        "key": "a",
+        "fallback": 10
+      }
+    ]
+  },
+  "jobforge": {
+    "commands": [
+      {
+        "action": "enqueue",
+        "id": "mail-1",
+        "payload": {
+          "template": "welcome"
+        }
+      },
+      {
+        "action": "claim",
+        "at": 0
+      },
+      {
+        "action": "finish",
+        "id": "mail-1",
+        "at": 1,
+        "error": "temporary_failure"
+      },
+      {
+        "action": "claim",
+        "at": 2
+      },
+      {
+        "action": "finish",
+        "id": "mail-1",
+        "at": 3
+      }
+    ]
+  },
+  "policylab": {
+    "roles": {
+      "reader": [],
+      "editor": [
+        "reader"
+      ]
+    },
+    "rules": [
+      {
+        "role": "reader",
+        "action": "read",
+        "resource": "docs/*",
+        "effect": "allow"
+      },
+      {
+        "role": "editor",
+        "action": "write",
+        "resource": "docs/*",
+        "effect": "allow",
+        "conditions": [
+          {
+            "attribute": "team",
+            "op": "eq",
+            "value": "engineering"
+          }
+        ]
+      },
+      {
+        "role": "*",
+        "action": "*",
+        "resource": "docs/secrets/*",
+        "effect": "deny"
+      }
+    ],
+    "requests": [
+      {
+        "roles": [
+          "editor"
+        ],
+        "action": "write",
+        "resource": "docs/spec",
+        "attributes": {
+          "team": "engineering"
+        }
+      },
+      {
+        "roles": [
+          "editor"
+        ],
+        "action": "read",
+        "resource": "docs/secrets/key"
+      },
+      {
+        "roles": [
+          "reader"
+        ],
+        "action": "write",
+        "resource": "docs/spec"
+      }
+    ]
+  },
+  "matchmaker": {
+    "candidates": {
+      "alice": [
+        "lab-A",
+        "lab-B"
+      ],
+      "bob": [
+        "lab-A",
+        "lab-B"
+      ],
+      "carol": [
+        "lab-B"
+      ]
+    },
+    "schools": {
+      "lab-A": [
+        "bob",
+        "alice"
+      ],
+      "lab-B": [
+        "alice",
+        "carol",
+        "bob"
+      ]
+    },
+    "capacities": {
+      "lab-A": 1,
+      "lab-B": 2
+    }
+  },
+  "learnlab": {
+    "x": [
+      [
+        -4,
+        0
+      ],
+      [
+        -3,
+        1
+      ],
+      [
+        -2,
+        0
+      ],
+      [
+        -1,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "y": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1
+    ],
+    "seed": 42,
+    "parameters": {
+      "epochs": 500,
+      "learning_rate": 0.1,
+      "l2": 0.01
+    }
+  },
+  "huffpack": {
+    "text": "abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra abracadabra "
+  }
+}

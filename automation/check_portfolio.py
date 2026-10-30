@@ -1,97 +1,146 @@
-"""Run representative functional checks, and export reproducible demo results."""
-import importlib.util
+"""Validate all projects with isolated test discovery and executable CLI scenarios."""
+
+import argparse
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
-import sqlite3
+import re
+import subprocess
+import sys
 import tempfile
 import threading
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from check_basics import run as check_basics
 
 ROOT = Path(__file__).resolve().parents[1]
 
-def module(slug):
-    spec = importlib.util.spec_from_file_location(slug, ROOT / 'projects' / slug / 'app.py')
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
 
-def require(condition, message):
-    if not condition:
-        raise RuntimeError(message)
+class QuietHandler(SimpleHTTPRequestHandler):
+    def log_message(self, *args):
+        pass
 
-def expect_error(fn):
-    try:
-        fn()
-    except ValueError:
-        return
-    raise RuntimeError('Expected ValueError')
 
-def run():
+def verify(output=None, export_examples=False):
+    catalogue = json.loads((ROOT / "site/projects.json").read_text())
+    tests = {}
     results = {}
-    events = [json.loads(line) for line in (ROOT/'projects/sentinel-log/sample.jsonl').read_text().splitlines()]
-    m = module('sentinel-log'); alerts = m.detect(events)
-    require(len(alerts) == 1 and alerts[0]['attempts'] == 3, 'Authentication detection')
-    require(m.detect(events, 5) == [], 'Threshold behavior')
-    results['sentinel-log'] = alerts
-    m = module('stockpilot')
-    with tempfile.TemporaryDirectory() as tmp:
-        db = m.connect(str(Path(tmp)/'stock.db'))
-        m.move(db,'keyboard',5); m.move(db,'keyboard',-2)
-        expect_error(lambda: m.move(db,'keyboard',-4))
-        quantity = db.execute('SELECT quantity FROM products').fetchone()[0]
-        require(quantity == 3, 'Stock rollback')
-        require(db.execute('SELECT count(*) FROM movements').fetchone()[0] == 2,'Movement audit')
-        db.close()
-    results['stockpilot'] = {'sku':'keyboard','quantity':quantity,'rejected_overdraft':True}
-    m = module('budgetlens')
-    report = m.summarize([{'category':'transport','amount':'1500.10'},{'category':'transport','amount':'1000.20'}],{'transport':2000})
-    require(report[0]['spent']=='2500.30' and report[0]['over_budget'], 'Decimal budget')
-    results['budgetlens'] = report
-    m = module('docuindex'); found=m.search(ROOT/'projects/docuindex/documents','sécurité')
-    require(len(found)==1 and found[0]['document'].endswith('security.txt'),'Search relevance')
-    require(m.search(ROOT/'projects/docuindex/documents','inexistant')==[], 'No-match search')
-    results['docuindex'] = [{**item,'document':Path(item['document']).name} for item in found]
-    m=module('cleandata')
-    import csv
-    with (ROOT/'projects/cleandata/sample.csv').open() as f: clean=m.clean(csv.DictReader(f))
-    require(clean['counts']=={'accepted':2,'rejected':2},'Data quarantine')
-    results['cleandata']=clean
-    class Handler(BaseHTTPRequestHandler):
-        def do_HEAD(self):
-            self.send_response(200 if self.path=='/' else 503); self.end_headers()
-        def log_message(self,*args): pass
-    server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
-    worker=threading.Thread(target=server.serve_forever,daemon=True); worker.start()
+    total = 0
+    for project in catalogue:
+        slug = project["slug"]
+        folder = ROOT / "projects" / slug
+        completed = subprocess.run(
+            [sys.executable, "-m", "unittest", "discover", "-v"],
+            cwd=folder,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        match = re.search(r"Ran (\d+) tests?", completed.stderr)
+        if completed.returncode or not match or int(match[1]) == 0:
+            raise RuntimeError(
+                f"{slug}: tests failed or no tests executed\n{completed.stdout}\n{completed.stderr}"
+            )
+        count = int(match[1])
+        total += count
+        tests[slug] = {"passed": count}
+        print(f"{slug}: {count} tests passed", file=sys.stderr)
+    lab = subprocess.run(
+        [sys.executable, "-m", "unittest", "discover", "-s", "automation", "-p", "test_*.py", "-v"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    lab_match = re.search(r"Ran (\d+) tests?", lab.stderr)
+    if lab.returncode or not lab_match or int(lab_match[1]) == 0:
+        raise RuntimeError("Lab integration tests failed\n" + lab.stderr)
+    lab_count = int(lab_match[1])
+    print(f"HTTP lab: {lab_count} integration tests passed", file=sys.stderr)
+    baseline = check_basics()
+    server = ThreadingHTTPServer(
+        ("127.0.0.1", 0), partial(QuietHandler, directory=str(ROOT / "site"))
+    )
+    worker = threading.Thread(target=server.serve_forever, daemon=True)
+    worker.start()
     try:
-        m=module('pulsewatch'); url=f'http://127.0.0.1:{server.server_port}'
-        require(m.probe(url+'/')['healthy'],'HTTP healthy service')
-        require(not m.probe(url+'/failure')['healthy'],'HTTP unhealthy service')
+        for project in catalogue:
+            slug = project["slug"]
+            folder = ROOT / "projects" / slug
+            advanced = (folder / "advanced.py").exists()
+            entry = "advanced.py" if advanced else "app.py"
+            sample = "advanced-sample.json" if advanced else "sample.json"
+            with tempfile.TemporaryDirectory() as tmp:
+                input_file = folder / sample
+                if slug == "pulsewatch":
+                    scenario = json.loads(input_file.read_text())
+                    url = f"http://127.0.0.1:{server.server_port}"
+                    scenario["targets"] = [url + "/", url + "/absent"]
+                    input_file = Path(tmp) / "input.json"
+                    input_file.write_text(json.dumps(scenario))
+                completed = subprocess.run(
+                    [sys.executable, entry, "--input", str(input_file)],
+                    cwd=folder,
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                )
+                if completed.returncode:
+                    raise RuntimeError(f"{slug}: CLI failed\n{completed.stderr}")
+                result = json.loads(completed.stdout)
+                if slug == "pulsewatch":
+                    if result["summary"]["healthy"] != 1:
+                        raise RuntimeError("Expected one healthy and one failing HTTP target")
+                    # Keep behavior, remove ephemeral port and timings from saved examples.
+                    for target in result["targets"]:
+                        target["url"] = target["url"].replace(url, "http://local-demo")
+                        for attempt in target["history"]:
+                            attempt["url"] = attempt["url"].replace(url, "http://local-demo")
+                            attempt.pop("latency_ms", None)
+                    result["summary"].pop("p95_final_latency_ms", None)
+                    result["note"] = (
+                        "Local HTTP checks; measured latencies omitted from reproducible examples."
+                    )
+                results[slug] = result
+                if export_examples:
+                    (folder / "examples").mkdir(exist_ok=True)
+                    (folder / "examples/result.json").write_text(
+                        json.dumps(result, indent=2, ensure_ascii=False) + "\n"
+                    )
+        # Actual HTTP requests are also covered in check_basics. Here verify catalogue files exist and parse.
+        if len(catalogue) != 22 or len(results) != 22:
+            raise RuntimeError("Expected exactly 22 documented projects")
     finally:
-        server.shutdown(); server.server_close(); worker.join()
-    results['pulsewatch']={'healthy_status':200,'unhealthy_status':503,'both_cases_checked':True}
-    m=module('flowdag'); order=m.schedule({'report':['validate'],'extract':[],'validate':['extract']})
-    require(order==['extract','validate','report'],'DAG ordering')
-    expect_error(lambda: m.schedule({'a':['b'],'b':['a']}))
-    results['flowdag']={'order':order,'cycle_rejected':True}
-    m=module('routecraft'); graph=json.loads((ROOT/'projects/routecraft/sample.json').read_text()); route=m.shortest(graph,'campus','centre')
-    require(route=={'cost':6,'path':['campus','gare','centre']},'Shortest path')
-    expect_error(lambda:m.shortest({'a':{'b':-1},'b':{}},'a','b'))
-    results['routecraft']=route
-    m=module('sensorscope'); anomalies=m.analyze([20,21,20,22,21,85,20])
-    require([r['index'] for r in anomalies['points'] if r['anomaly']]==[5],'Outlier detection')
-    require(m.analyze([1,1,2])['points'][2]['anomaly'],'Zero-MAD behavior')
-    results['sensorscope']=anomalies
-    m=module('vaultcheck')
-    with tempfile.TemporaryDirectory() as tmp:
-        p=Path(tmp)/'document.txt'; p.write_text('original'); before=m.manifest(tmp)
-        p.write_text('changed'); after=m.manifest(tmp)
-        require(before['document.txt']!=after['document.txt'],'Tamper detection')
-    results['vaultcheck']={'algorithm':'SHA-256','modification_detected':True}
-    return {'status':'passed','projects_checked':len(results),'results':results}
+        server.shutdown()
+        server.server_close()
+        worker.join()
+    report = {
+        "status": "passed",
+        "projects_checked": len(results),
+        "unit_tests_passed": total,
+        "lab_tests_passed": lab_count,
+        "checks": tests,
+        "baseline_checks": baseline["projects_checked"],
+        "results": results,
+    }
+    if output:
+        output.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n")
+    return report
 
-if __name__=='__main__':
-    import argparse
-    parser=argparse.ArgumentParser(); parser.add_argument('--output',type=Path); args=parser.parse_args()
-    result=run(); text=json.dumps(result,indent=2,ensure_ascii=False)+'\n'
-    if args.output: args.output.write_text(text)
-    print(text, end='')
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--export-examples", action="store_true")
+    args = parser.parse_args()
+    report = verify(args.output, args.export_examples)
+    print(
+        json.dumps(
+            {
+                "status": report["status"],
+                "projects_checked": report["projects_checked"],
+                "unit_tests_passed": report["unit_tests_passed"],
+                "lab_tests_passed": report["lab_tests_passed"],
+            },
+            indent=2,
+        )
+    )

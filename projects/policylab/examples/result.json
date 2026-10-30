@@ -1,0 +1,44 @@
+{
+  "decisions": [
+    {
+      "allowed": true,
+      "reason": "allow",
+      "expanded_roles": [
+        "editor",
+        "reader"
+      ],
+      "matched_rules": [
+        {
+          "rule": 1,
+          "effect": "allow"
+        }
+      ]
+    },
+    {
+      "allowed": false,
+      "reason": "explicit_deny",
+      "expanded_roles": [
+        "editor",
+        "reader"
+      ],
+      "matched_rules": [
+        {
+          "rule": 0,
+          "effect": "allow"
+        },
+        {
+          "rule": 2,
+          "effect": "deny"
+        }
+      ]
+    },
+    {
+      "allowed": false,
+      "reason": "default_deny",
+      "expanded_roles": [
+        "reader"
+      ],
+      "matched_rules": []
+    }
+  ]
+}

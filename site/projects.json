@@ -3,80 +3,198 @@
     "slug": "sentinel-log",
     "title": "Sentinel Log",
     "domain": "Cybersécurité",
-    "description": "Détecter les échecs de connexion répétés dans des journaux JSONL.",
-    "command": "python3 app.py sample.jsonl",
-    "limits": "Les règles sont heuristiques. Aucun blocage réseau ni collecte de secrets. Les événements doivent avoir des horodatages compatibles."
+    "description": "Corrélation de trois règles : brute force, password spraying et connexion réussie après échecs ; fenêtres UTC et réseaux de confiance.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Corrélation de lots en mémoire, sans collecteur permanent ni notifications. Seuils heuristiques à adapter à des journaux fiables.",
+    "generation": "approfondi"
   },
   {
     "slug": "stockpilot",
     "title": "StockPilot",
     "domain": "Gestion et bases de données",
-    "description": "Gérer un stock SQLite avec journal de mouvements et prévention des sorties impossibles.",
-    "command": "python3 app.py --db /tmp/stockpilot-demo.db move clavier 5",
-    "limits": "Prototype local sans authentification ni gestion multi-entrepôts. Chaque répétition de move ajoute un mouvement."
+    "description": "Stock multi-entrepôts avec transferts atomiques, audit et idempotence des opérations.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Persistance SQLite locale ; pas de fournisseurs, facturation, réservations ou gestion des droits.",
+    "generation": "approfondi"
   },
   {
     "slug": "budgetlens",
     "title": "BudgetLens",
     "domain": "Finance personnelle",
-    "description": "Analyser des dépenses CSV avec des montants décimaux exacts et des plafonds par catégorie.",
-    "command": "python3 app.py sample.csv",
-    "limits": "Montants dans une seule devise choisie par l’utilisateur ; pas de connexion bancaire ni de conseil financier."
+    "description": "Analyse mensuelle avec revenus, dépenses, remboursements et projection explicite de fin de mois.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Une seule devise ; projection linéaire explicite sans conseil financier ni connexion bancaire.",
+    "generation": "approfondi"
   },
   {
     "slug": "docuindex",
     "title": "DocuIndex",
     "domain": "Recherche et traitement du texte",
-    "description": "Indexer des documents locaux et classer les résultats avec un score TF-IDF.",
-    "command": "python3 app.py documents \"sécurité données\"",
-    "limits": "Recherche lexicale explicable, sans LLM, embeddings ou compréhension sémantique. Charge les documents en mémoire."
+    "description": "Recherche BM25 sur index inversé, requêtes ET/OU, expressions exactes et index exportable.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Recherche lexicale BM25 locale, sans modèle de langage, stemming ou indexation incrémentale.",
+    "generation": "approfondi"
   },
   {
     "slug": "cleandata",
     "title": "CleanData",
     "domain": "Ingénierie des données",
-    "description": "Valider et dédupliquer un fichier de mesures, en isolant chaque ligne rejetée.",
-    "command": "python3 app.py sample.csv",
-    "limits": "Traitement par lot en mémoire ; la première occurrence valide d’un identifiant est conservée."
+    "description": "Pipeline à schéma configurable avec typage, normalisation, bornes, déduplication et métriques de qualité.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Validation de lots en mémoire ; pas de transport de flux, orchestration distante ou entrepôt de données.",
+    "generation": "approfondi"
   },
   {
     "slug": "pulsewatch",
     "title": "PulseWatch",
     "domain": "Observabilité et réseau",
-    "description": "Mesurer le statut et la latence d’une URL HTTP avec des délais bornés.",
-    "command": "python3 app.py http://127.0.0.1:8080/",
-    "limits": "À utiliser sur des services autorisés. CLI locale, pas une API publique : n’exposez pas une sonde acceptant des URL arbitraires sans protection SSRF. Certains serveurs refusent HEAD."
+    "description": "Sondes multi-cibles concurrentes avec reprises bornées, historique des tentatives et agrégats de disponibilité instantanée.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "CLI et sondes locales ; pas de supervision permanente, SLO historique ou API de sondage public.",
+    "generation": "approfondi"
   },
   {
     "slug": "flowdag",
     "title": "FlowDAG",
     "domain": "Algorithmique et orchestration",
-    "description": "Calculer l’ordre d’exécution d’un graphe de tâches et détecter les cycles.",
-    "command": "python3 app.py sample.json",
-    "limits": "Planificateur déterministe, sans exécution de commandes, parallélisme ou reprise après panne."
+    "description": "Exécution réelle des DAG avec concurrence bornée, reprises et distinction entre tâches échouées et ignorées.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Exécution dans un processus avec threads, sans reprise persistante, isolation des handlers ou annulation forcée.",
+    "generation": "approfondi"
   },
   {
     "slug": "routecraft",
     "title": "RouteCraft",
     "domain": "Optimisation et logistique",
-    "description": "Trouver un chemin de coût minimal avec l’algorithme de Dijkstra.",
-    "command": "python3 app.py sample.json campus centre",
-    "limits": "Graphe orienté fourni manuellement ; pas de données cartographiques, de trafic ni de distances réelles."
+    "description": "Routage avec sommets bloqués, poids négatifs et détection des cycles négatifs qui influencent la destination.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Graphes fournis par scénario ; pas de cartographie, trafic ou calcul géographique.",
+    "generation": "approfondi"
   },
   {
     "slug": "sensorscope",
     "title": "SensorScope",
     "domain": "IoT et statistiques",
-    "description": "Détecter des anomalies par médiane et écart absolu médian dans une série de capteurs.",
-    "command": "python3 app.py sample.csv",
-    "limits": "Analyse statistique hors ligne, sans modèle entraîné ni validation clinique ou industrielle. Un contexte métier est nécessaire pour qualifier une anomalie."
+    "description": "Détection par capteur sur fenêtres historiques, confirmation des alertes et récupération avec hystérésis.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Détection statistique en mémoire ; pas de matériel IoT, MQTT, validation industrielle ou réapprentissage automatique.",
+    "generation": "approfondi"
   },
   {
     "slug": "vaultcheck",
     "title": "VaultCheck",
     "domain": "Intégrité et sauvegardes",
-    "description": "Créer et vérifier un manifeste SHA-256 de fichiers locaux.",
-    "command": "python3 app.py create documents /tmp/vaultcheck-demo.json",
-    "limits": "SHA-256 détecte les modifications mais ne chiffre et ne signe pas les fichiers. Conserver le manifeste en lieu sûr. Les liens symboliques sont ignorés ; fichiers supposés stables pendant la lecture."
+    "description": "Snapshots de contenu persistants, déduplication SHA-256 et restauration vérifiée dans un nouveau dossier.",
+    "command": "python3 advanced.py --input advanced-sample.json",
+    "limits": "Sauvegarde locale SQLite, sans chiffrement ou permissions conservées ; restauration dans une destination neuve contrôlée.",
+    "generation": "approfondi"
+  },
+  {
+    "slug": "taskboard",
+    "title": "TaskBoard",
+    "domain": "Gestion de projet",
+    "description": "Tableau de tâches persistant avec transitions contrôlées, versions optimistes et audit transactionnel.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Application locale sans serveur HTTP ni authentification. Le journal SQLite peut être modifié par quiconque possède le fichier ; il ne constitue pas une preuve inviolable.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "roomguard",
+    "title": "RoomGuard",
+    "domain": "Réservations et concurrence",
+    "description": "Réserver une ressource sans chevauchement, annuler et rejouer une réservation de manière idempotente.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Sans récurrence, calendrier visuel ni notifications. Les identités sont déclaratives ; la précision des instants utilise des nombres flottants.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "ledgercore",
+    "title": "LedgerCore",
+    "domain": "Comptabilité et transactions",
+    "description": "Journal en partie double avec montants entiers, idempotence, balances et contre-passation.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Grand livre pédagogique non certifié, sans rapprochement bancaire, fiscalité ni multi-devise. SQLite n’empêche pas un administrateur de modifier directement les écritures.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "flagforge",
+    "title": "FlagForge",
+    "domain": "Livraison logicielle",
+    "description": "Moteur de feature flags déterministes avec règles de ciblage, groupes de déploiement et explications.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Moteur local sans console d’administration ni synchronisation. Les règles doivent provenir d’une configuration de confiance ; les feature flags ne remplacent jamais un contrôle d’accès.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "gatekeeper",
+    "title": "GateKeeper",
+    "domain": "Réseau et contrôle de débit",
+    "description": "Limiteur à jetons par client avec horloge injectable, synchronisation et délais de reprise calculés.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "États locaux à un processus et perdus au redémarrage. Plusieurs serveurs nécessitent un état partagé et une opération atomique, par exemple dans Redis.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "eventrail",
+    "title": "EventRail",
+    "domain": "Architecture événementielle",
+    "description": "Event store SQLite à versions optimistes avec hachage chaîné, rejeu et projection de comptes.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Pas de broker, réplication, signatures ou garantie exactly-once. Le journal est append-only par l’API, pas contre un accès direct au fichier SQLite.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "cachecraft",
+    "title": "CacheCraft",
+    "domain": "Systèmes et performance",
+    "description": "Cache LRU pondéré avec expiration, verrouillage et fusion des chargements concurrents par clé.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Cache local non distribué, sans invalidation externe ni taille mémoire mesurée. Les valeurs retournées peuvent être mutables ; le client doit gérer ce partage.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "jobforge",
+    "title": "JobForge",
+    "domain": "Traitement asynchrone",
+    "description": "File SQLite avec prise atomique, bail, tentatives bornées, reprise et jetons de possession.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "File locale sans broker ni exécuteur de tâches. Les jetons protègent les clôtures dans la file, mais ne peuvent annuler un effet externe déjà commencé.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "policylab",
+    "title": "PolicyLab",
+    "domain": "Sécurité et autorisations",
+    "description": "Évaluateur RBAC/ABAC avec héritage de rôles, priorité au refus et trace des décisions.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Moteur de politiques local sans fournisseur d’identité ni middleware HTTP. Les motifs ne normalisent pas des chemins de fichiers : l’application doit fournir des identifiants de ressources canoniques.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "matchmaker",
+    "title": "MatchMaker",
+    "domain": "Optimisation et affectation",
+    "description": "Affectation stable candidats/établissements à capacités multiples avec vérification des paires bloquantes.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Préférences synthétiques et strictes. Pas de gestion des couples, contraintes géographiques, quotas de diversité ou protection contre des déclarations stratégiques.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "learnlab",
+    "title": "LearnLab",
+    "domain": "Apprentissage automatique",
+    "description": "Régression logistique explicable avec séparation stratifiée, standardisation apprise sur entraînement et métriques.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Données synthétiques ; aucun modèle médical, financier ou d’évaluation des personnes. Pas de dépendance ML, d’accélération ni de revendication de performance réelle.",
+    "generation": "nouveau"
+  },
+  {
+    "slug": "huffpack",
+    "title": "HuffPack",
+    "domain": "Compression et formats binaires",
+    "description": "Codec Huffman canonique avec en-tête binaire, contrôle de corruption et limites de décompression.",
+    "command": "python3 app.py --input sample.json",
+    "limits": "Format expérimental local, sans chiffrement. Le décodeur borne la sortie mais attend que le fichier compressé ait déjà été chargé en mémoire ; prévoir aussi une limite d’entrée dans une API.",
+    "generation": "nouveau"
   }
 ]

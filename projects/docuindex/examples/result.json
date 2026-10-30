@@ -1,0 +1,29 @@
+{
+  "queries": [
+    {
+      "query": "sécurité données",
+      "results": [
+        {
+          "document": "security",
+          "score": 1.068355,
+          "excerpt": "La sécurité des données protège les systèmes."
+        }
+      ]
+    },
+    {
+      "query": "\"de données\"",
+      "results": [
+        {
+          "document": "pipeline",
+          "score": 1.068355,
+          "excerpt": "Un pipeline de données valide les mesures."
+        }
+      ]
+    }
+  ],
+  "index": {
+    "documents": 3,
+    "terms": 15,
+    "average_length": 6.333333333333333
+  }
+}

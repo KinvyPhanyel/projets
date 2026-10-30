@@ -1,55 +1,83 @@
-# Laboratoire de projets · Génie informatique
+# Laboratoire informatique — 22 projets
 
-Dix démonstrateurs autonomes pour explorer la cybersécurité, les données, les transactions et les algorithmes. Chaque dossier contient du code exécutable, une documentation de conception, un exemple et des limites explicites.
+Douze nouveaux projets et dix projets approfondis, avec moteurs métier autonomes, scénarios modifiables, documentation de conception et tests. Les thèmes couvrent sécurité, transactions, systèmes, données, optimisation et apprentissage automatique.
 
-**Statut :** premières versions pédagogiques générées avec assistance IA. Ce dépôt ne prétend pas démontrer une expérience professionnelle, des utilisateurs réels ou des performances non mesurées. Comprendre, modifier et approfondir les projets avant de les défendre en entretien.
+Ces projets ont été réalisés avec assistance IA. Ce sont des implémentations pédagogiques exécutables : aucun utilisateur réel, déploiement en production ou résultat de performance n'est revendiqué. Le dossier de chaque projet décrit précisément ses garanties et ses limites.
 
-## Catalogue
+## Essayer dans le navigateur
 
-| Projet | Domaine | Fonction |
-| --- | --- | --- |
-| [Sentinel Log](projects/sentinel-log/README.md) | Cybersécurité | Détecter les échecs de connexion répétés dans des journaux JSONL. |
-| [StockPilot](projects/stockpilot/README.md) | Gestion et bases de données | Gérer un stock SQLite avec journal de mouvements et prévention des sorties impossibles. |
-| [BudgetLens](projects/budgetlens/README.md) | Finance personnelle | Analyser des dépenses CSV avec des montants décimaux exacts et des plafonds par catégorie. |
-| [DocuIndex](projects/docuindex/README.md) | Recherche et traitement du texte | Indexer des documents locaux et classer les résultats avec un score TF-IDF. |
-| [CleanData](projects/cleandata/README.md) | Ingénierie des données | Valider et dédupliquer un fichier de mesures, en isolant chaque ligne rejetée. |
-| [PulseWatch](projects/pulsewatch/README.md) | Observabilité et réseau | Mesurer le statut et la latence d’une URL HTTP avec des délais bornés. |
-| [FlowDAG](projects/flowdag/README.md) | Algorithmique et orchestration | Calculer l’ordre d’exécution d’un graphe de tâches et détecter les cycles. |
-| [RouteCraft](projects/routecraft/README.md) | Optimisation et logistique | Trouver un chemin de coût minimal avec l’algorithme de Dijkstra. |
-| [SensorScope](projects/sensorscope/README.md) | IoT et statistiques | Détecter des anomalies par médiane et écart absolu médian dans une série de capteurs. |
-| [VaultCheck](projects/vaultcheck/README.md) | Intégrité et sauvegardes | Créer et vérifier un manifeste SHA-256 de fichiers locaux. |
-
-## Démarrage
-
-Prérequis : Python **3.12+**, Git et un terminal. Aucune bibliothèque externe, aucun compte cloud et aucune clé API ne sont nécessaires.
+Python **3.12+** suffit, sans installation de dépendance :
 
 ```sh
 cd /workspace/projets
-python3 -m http.server 8080 --bind 127.0.0.1 --directory site
+python3 automation/serve_lab.py
 ```
 
-Le catalogue statique est servi sur le port 8080. Il permet de chercher les projets et de consulter les résultats enregistrés. **Il n’exécute pas les scripts Python dans le navigateur.** Pour manipuler une application, suivre son README depuis son dossier.
+Sur votre machine, remplacer le chemin par celui du dépôt cloné. Le laboratoire écoute seulement sur l'interface locale, port **8080**. Le catalogue permet de filtrer les 22 projets, lire les résultats vérifiés, modifier le scénario JSON et exécuter le moteur Python. Les données SQLite des démonstrations web sont en mémoire et isolées à chaque exécution.
 
-Sur votre machine après clonage, remplacer `/workspace/projets` par le chemin du dépôt.
+Le mode statique reste disponible avec `python3 -m http.server 8080 --bind 127.0.0.1 --directory site` : descriptions et résultats sont consultables, mais l'exécution interactive nécessite serve_lab.py. Aucun hébergement distant n'est activé.
 
-## Vérification fonctionnelle
+## Catalogue
+
+| Projet | Domaine | Fonctions livrées |
+| --- | --- | --- |
+| [Sentinel Log](projects/sentinel-log/README.md) | Cybersécurité | Corrélation de trois règles : brute force, password spraying et connexion réussie après échecs ; fenêtres UTC et réseaux de confiance. |
+| [StockPilot](projects/stockpilot/README.md) | Gestion et bases de données | Stock multi-entrepôts avec transferts atomiques, audit et idempotence des opérations. |
+| [BudgetLens](projects/budgetlens/README.md) | Finance personnelle | Analyse mensuelle avec revenus, dépenses, remboursements et projection explicite de fin de mois. |
+| [DocuIndex](projects/docuindex/README.md) | Recherche et traitement du texte | Recherche BM25 sur index inversé, requêtes ET/OU, expressions exactes et index exportable. |
+| [CleanData](projects/cleandata/README.md) | Ingénierie des données | Pipeline à schéma configurable avec typage, normalisation, bornes, déduplication et métriques de qualité. |
+| [PulseWatch](projects/pulsewatch/README.md) | Observabilité et réseau | Sondes multi-cibles concurrentes avec reprises bornées, historique des tentatives et agrégats de disponibilité instantanée. |
+| [FlowDAG](projects/flowdag/README.md) | Algorithmique et orchestration | Exécution réelle des DAG avec concurrence bornée, reprises et distinction entre tâches échouées et ignorées. |
+| [RouteCraft](projects/routecraft/README.md) | Optimisation et logistique | Routage avec sommets bloqués, poids négatifs et détection des cycles négatifs qui influencent la destination. |
+| [SensorScope](projects/sensorscope/README.md) | IoT et statistiques | Détection par capteur sur fenêtres historiques, confirmation des alertes et récupération avec hystérésis. |
+| [VaultCheck](projects/vaultcheck/README.md) | Intégrité et sauvegardes | Snapshots de contenu persistants, déduplication SHA-256 et restauration vérifiée dans un nouveau dossier. |
+| [TaskBoard](projects/taskboard/README.md) | Gestion de projet | Tableau de tâches persistant avec transitions contrôlées, versions optimistes et audit transactionnel. |
+| [RoomGuard](projects/roomguard/README.md) | Réservations et concurrence | Réserver une ressource sans chevauchement, annuler et rejouer une réservation de manière idempotente. |
+| [LedgerCore](projects/ledgercore/README.md) | Comptabilité et transactions | Journal en partie double avec montants entiers, idempotence, balances et contre-passation. |
+| [FlagForge](projects/flagforge/README.md) | Livraison logicielle | Moteur de feature flags déterministes avec règles de ciblage, groupes de déploiement et explications. |
+| [GateKeeper](projects/gatekeeper/README.md) | Réseau et contrôle de débit | Limiteur à jetons par client avec horloge injectable, synchronisation et délais de reprise calculés. |
+| [EventRail](projects/eventrail/README.md) | Architecture événementielle | Event store SQLite à versions optimistes avec hachage chaîné, rejeu et projection de comptes. |
+| [CacheCraft](projects/cachecraft/README.md) | Systèmes et performance | Cache LRU pondéré avec expiration, verrouillage et fusion des chargements concurrents par clé. |
+| [JobForge](projects/jobforge/README.md) | Traitement asynchrone | File SQLite avec prise atomique, bail, tentatives bornées, reprise et jetons de possession. |
+| [PolicyLab](projects/policylab/README.md) | Sécurité et autorisations | Évaluateur RBAC/ABAC avec héritage de rôles, priorité au refus et trace des décisions. |
+| [MatchMaker](projects/matchmaker/README.md) | Optimisation et affectation | Affectation stable candidats/établissements à capacités multiples avec vérification des paires bloquantes. |
+| [LearnLab](projects/learnlab/README.md) | Apprentissage automatique | Régression logistique explicable avec séparation stratifiée, standardisation apprise sur entraînement et métriques. |
+| [HuffPack](projects/huffpack/README.md) | Compression et formats binaires | Codec Huffman canonique avec en-tête binaire, contrôle de corruption et limites de décompression. |
+
+## Profondeur des projets
+
+Les dix premiers conservent leur CLI initiale et ajoutent `advanced.py` : corrélation multi-règles, transferts atomiques, budget mensuel, index BM25, schémas de validation, sondes concurrentes, exécution DAG, Bellman-Ford, surveillance par capteur et vrais snapshots de sauvegarde.
+
+Les douze suivants séparent `core.py` et `app.py`. Ils incluent entre autres contrôle de concurrence optimiste, exclusion de réservation, comptabilité en partie double, idempotence, cache single-flight, files avec baux, héritage de rôles et compression binaire vérifiée.
+
+Chaque dossier fournit README, DESIGN, scénario JSON, tests et sortie réelle de référence. Les invariants et cas d'échec sont décrits et vérifiés, sans cacher les fonctions manquantes.
+
+## Vérifier l'ensemble
 
 ```sh
 python3 automation/check_portfolio.py
 ```
 
-Ce contrôle exerce les dix projets, notamment un retrait de stock refusé, un graphe cyclique, une détection d’altération et des réponses HTTP 200/503 via un serveur local temporaire. Ce n’est pas une suite exhaustive ni une certification de production. Pour actualiser les résultats du catalogue :
+Le contrôle découvre les tests de chaque dossier, refuse une suite vide, exécute les 22 scénarios CLI et conserve les contrôles fonctionnels des dix exemples initiaux. Les tests de concurrence emploient aussi des connexions SQLite indépendantes.
+
+Pour régénérer les résultats du catalogue et les exemples :
 
 ```sh
-python3 automation/check_portfolio.py --output site/demo-results.json
+python3 automation/check_portfolio.py --output site/demo-results.json --export-examples
 ```
 
-Les résultats sont déterministes : les relancer sans changement ne produit pas artificiellement de nouvelles données.
+Pour un seul projet : suivre son README puis lancer `python3 -m unittest discover -v` dans son dossier.
 
-## Organisation et publication
+## Architecture du dépôt
 
-Un dépôt contient ici dix dossiers indépendants. Un dossier pourra être extrait en dépôt séparé lorsqu’il aura sa propre interface, des évolutions substantielles et un historique utile.
+```text
+projects/<nom>/   moteur, CLI, scénario, conception, tests, résultat
+site/            catalogue statique et interface du laboratoire
+                  (les scripts Python restent côté serveur local)
+automation/      validation et serveur de démonstration local
+docs/            publication, progression et choix des sujets
+```
 
-Voir [le guide de visibilité et démonstration](docs/PUBLICATION.md), [les choix de sujets et leurs sources](docs/PROJECT_SELECTION.md) et [le parcours de progression](docs/LEARNING_PATH.md).
+Voir [l'architecture et les limites du laboratoire](docs/LAB.md), [la matrice des fonctions](docs/FEATURE_MATRIX.md), [le guide de publication](docs/PUBLICATION.md) et [le parcours d'apprentissage](docs/LEARNING_PATH.md).
 
-La configuration du serveur, les comptes externes, une automatisation quotidienne et la chaîne YouTube sont reportés à une étape ultérieure. Aucun de ces services n’est activé par ce dépôt.
+Le serveur personnel, l'agent quotidien et YouTube restent hors de cette étape. Le code peut être public ou privé indépendamment d'une future vitrine ; aucune publication de site n'est effectuée ici.

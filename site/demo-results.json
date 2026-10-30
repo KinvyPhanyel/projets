@@ -1,146 +1,686 @@
 {
   "status": "passed",
-  "projects_checked": 10,
-  "results": {
-    "sentinel-log": [
-      {
-        "ip": "192.0.2.10",
-        "user": "demo",
-        "attempts": 3,
-        "timestamp": "2026-10-30T10:00:02+00:00",
-        "rule": "repeated_auth_failure"
-      }
-    ],
-    "stockpilot": {
-      "sku": "keyboard",
-      "quantity": 3,
-      "rejected_overdraft": true
+  "projects_checked": 22,
+  "unit_tests_passed": 72,
+  "lab_tests_passed": 8,
+  "checks": {
+    "sentinel-log": {
+      "passed": 3
     },
-    "budgetlens": [
-      {
-        "category": "transport",
-        "spent": "2500.30",
-        "limit": "2000",
-        "over_budget": true
+    "stockpilot": {
+      "passed": 3
+    },
+    "budgetlens": {
+      "passed": 3
+    },
+    "docuindex": {
+      "passed": 3
+    },
+    "cleandata": {
+      "passed": 3
+    },
+    "pulsewatch": {
+      "passed": 3
+    },
+    "flowdag": {
+      "passed": 3
+    },
+    "routecraft": {
+      "passed": 3
+    },
+    "sensorscope": {
+      "passed": 3
+    },
+    "vaultcheck": {
+      "passed": 5
+    },
+    "taskboard": {
+      "passed": 4
+    },
+    "roomguard": {
+      "passed": 4
+    },
+    "ledgercore": {
+      "passed": 3
+    },
+    "flagforge": {
+      "passed": 3
+    },
+    "gatekeeper": {
+      "passed": 3
+    },
+    "eventrail": {
+      "passed": 3
+    },
+    "cachecraft": {
+      "passed": 3
+    },
+    "jobforge": {
+      "passed": 5
+    },
+    "policylab": {
+      "passed": 3
+    },
+    "matchmaker": {
+      "passed": 3
+    },
+    "learnlab": {
+      "passed": 3
+    },
+    "huffpack": {
+      "passed": 3
+    }
+  },
+  "baseline_checks": 10,
+  "results": {
+    "sentinel-log": {
+      "alerts": [
+        {
+          "rule": "password_spray",
+          "severity": "high",
+          "ip": "192.0.2.10",
+          "users": 3
+        },
+        {
+          "rule": "brute_force",
+          "severity": "medium",
+          "ip": "192.0.2.10",
+          "user": "alice",
+          "count": 3
+        },
+        {
+          "rule": "success_after_failures",
+          "severity": "high",
+          "ip": "192.0.2.10",
+          "user": "alice",
+          "failures": 3
+        }
+      ],
+      "events_processed": 6,
+      "events_ignored": 0
+    },
+    "stockpilot": {
+      "stock": [
+        {
+          "warehouse": "campus",
+          "sku": "keyboard",
+          "quantity": 6
+        },
+        {
+          "warehouse": "centre",
+          "sku": "keyboard",
+          "quantity": 4
+        }
+      ],
+      "audit": [
+        {
+          "seq": 1,
+          "operation": "receipt-1",
+          "warehouse": "campus",
+          "sku": "keyboard",
+          "delta": 10
+        },
+        {
+          "seq": 2,
+          "operation": "transfer-1",
+          "warehouse": "centre",
+          "sku": "keyboard",
+          "delta": 4
+        },
+        {
+          "seq": 3,
+          "operation": "transfer-1",
+          "warehouse": "campus",
+          "sku": "keyboard",
+          "delta": -4
+        }
+      ]
+    },
+    "budgetlens": {
+      "as_of": "2026-10-15",
+      "included_transactions": 4,
+      "income": "100000",
+      "net_expenses": "19000",
+      "cash_flow": "81000",
+      "categories": [
+        {
+          "category": "food",
+          "net_spent": "15000",
+          "limit": "25000",
+          "remaining": "10000",
+          "projected_month_end": "31000.00",
+          "over_budget": false
+        },
+        {
+          "category": "transport",
+          "net_spent": "4000",
+          "limit": "15000",
+          "remaining": "11000",
+          "projected_month_end": "8266.67",
+          "over_budget": false
+        }
+      ],
+      "projection_assumption": "constant average daily spending"
+    },
+    "docuindex": {
+      "queries": [
+        {
+          "query": "sécurité données",
+          "results": [
+            {
+              "document": "security",
+              "score": 1.068355,
+              "excerpt": "La sécurité des données protège les systèmes."
+            }
+          ]
+        },
+        {
+          "query": "\"de données\"",
+          "results": [
+            {
+              "document": "pipeline",
+              "score": 1.068355,
+              "excerpt": "Un pipeline de données valide les mesures."
+            }
+          ]
+        }
+      ],
+      "index": {
+        "documents": 3,
+        "terms": 15,
+        "average_length": 6.333333333333333
       }
-    ],
-    "docuindex": [
-      {
-        "document": "security.txt",
-        "score": 0.156163
-      }
-    ],
+    },
     "cleandata": {
       "accepted": [
         {
           "id": "a",
-          "timestamp": "2026-10-30T10:00:00",
-          "value": 21.5
-        },
-        {
-          "id": "c",
-          "timestamp": "2026-10-30T12:00:00",
-          "value": 23.0
+          "temperature": 21.5,
+          "timestamp": "2026-10-30T10:00:00+00:00"
         }
       ],
       "rejected": [
         {
-          "line": 3,
-          "reason": "identifiant dupliqué",
-          "row": {
+          "row": 2,
+          "errors": [
+            "id:duplicate"
+          ],
+          "original": {
             "id": "a",
-            "timestamp": "2026-10-30T11:00:00",
-            "value": "22"
+            "temperature": 22,
+            "timestamp": "2026-10-30T11:00:00Z"
           }
         },
         {
-          "line": 4,
-          "reason": "Invalid isoformat string: 'invalid'",
-          "row": {
+          "row": 3,
+          "errors": [
+            "temperature:invalid",
+            "timestamp:invalid"
+          ],
+          "original": {
             "id": "b",
-            "timestamp": "invalid",
-            "value": "10"
+            "temperature": "NaN",
+            "timestamp": "bad"
           }
         }
       ],
-      "counts": {
-        "accepted": 2,
-        "rejected": 2
+      "quality": {
+        "total": 3,
+        "valid": 1,
+        "invalid": 2,
+        "valid_ratio": 0.3333333333333333,
+        "errors_by_field": {
+          "id:duplicate": 1,
+          "temperature:invalid": 1,
+          "timestamp:invalid": 1
+        }
       }
     },
     "pulsewatch": {
-      "healthy_status": 200,
-      "unhealthy_status": 503,
-      "both_cases_checked": true
+      "targets": [
+        {
+          "url": "http://local-demo/",
+          "healthy": true,
+          "attempts": 1,
+          "history": [
+            {
+              "url": "http://local-demo/",
+              "status": 200,
+              "healthy": true,
+              "error": null
+            }
+          ]
+        },
+        {
+          "url": "http://local-demo/absent",
+          "healthy": false,
+          "attempts": 2,
+          "history": [
+            {
+              "url": "http://local-demo/absent",
+              "status": 404,
+              "healthy": false,
+              "error": "HTTP Error 404: File not found"
+            },
+            {
+              "url": "http://local-demo/absent",
+              "status": 404,
+              "healthy": false,
+              "error": "HTTP Error 404: File not found"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "total": 2,
+        "healthy": 1,
+        "availability_snapshot": 0.5
+      },
+      "note": "Local HTTP checks; measured latencies omitted from reproducible examples."
     },
     "flowdag": {
-      "order": [
-        "extract",
-        "validate",
-        "report"
-      ],
-      "cycle_rejected": true
+      "states": {
+        "a": "done",
+        "b": "done",
+        "total": "done",
+        "failure": "failed",
+        "downstream": "skipped"
+      },
+      "attempts": {
+        "a": 1,
+        "b": 1,
+        "total": 1,
+        "failure": 2,
+        "downstream": 0
+      },
+      "outputs": {
+        "a": 3,
+        "b": 4,
+        "total": 7
+      },
+      "errors": {
+        "failure": "ValueError: Échec demandé par le scénario"
+      }
     },
     "routecraft": {
-      "cost": 6,
-      "path": [
-        "campus",
-        "gare",
-        "centre"
-      ]
-    },
-    "sensorscope": {
-      "median": 21,
-      "mad": 1,
-      "zero_mad_policy": "flag values different from median",
-      "points": [
+      "routes": [
         {
-          "index": 0,
-          "value": 20,
-          "score": 0.6745,
-          "anomaly": false
+          "cost": 3,
+          "path": [
+            "campus",
+            "gare",
+            "centre"
+          ],
+          "passes": 2
         },
         {
-          "index": 1,
-          "value": 21,
-          "score": 0.0,
-          "anomaly": false
-        },
-        {
-          "index": 2,
-          "value": 20,
-          "score": 0.6745,
-          "anomaly": false
-        },
-        {
-          "index": 3,
-          "value": 22,
-          "score": 0.6745,
-          "anomaly": false
-        },
-        {
-          "index": 4,
-          "value": 21,
-          "score": 0.0,
-          "anomaly": false
-        },
-        {
-          "index": 5,
-          "value": 85,
-          "score": 43.1673,
-          "anomaly": true
-        },
-        {
-          "index": 6,
-          "value": 20,
-          "score": 0.6745,
-          "anomaly": false
+          "cost": 9,
+          "path": [
+            "campus",
+            "centre"
+          ],
+          "passes": 1
         }
       ]
     },
+    "sensorscope": {
+      "points": [
+        {
+          "sensor": "room-A",
+          "value": 20.0,
+          "score": null,
+          "anomaly": false,
+          "state": "normal"
+        },
+        {
+          "sensor": "room-A",
+          "value": 20.1,
+          "score": null,
+          "anomaly": false,
+          "state": "normal"
+        },
+        {
+          "sensor": "room-A",
+          "value": 20.0,
+          "score": null,
+          "anomaly": false,
+          "state": "normal"
+        },
+        {
+          "sensor": "room-A",
+          "value": 50.0,
+          "score": 300.0,
+          "anomaly": true,
+          "state": "normal"
+        },
+        {
+          "sensor": "room-A",
+          "value": 51.0,
+          "score": 310.0,
+          "anomaly": true,
+          "state": "alert"
+        },
+        {
+          "sensor": "room-A",
+          "value": 20.0,
+          "score": 0.0,
+          "anomaly": false,
+          "state": "alert"
+        },
+        {
+          "sensor": "room-A",
+          "value": 20.1,
+          "score": 1.0,
+          "anomaly": false,
+          "state": "normal"
+        }
+      ],
+      "alerts": [
+        {
+          "sensor": "room-A",
+          "event": "opened",
+          "timestamp": "2026-10-30T10:00:04Z"
+        },
+        {
+          "sensor": "room-A",
+          "event": "recovered",
+          "timestamp": "2026-10-30T10:00:06Z"
+        }
+      ],
+      "baselines": {
+        "room-A": [
+          20.0,
+          20.1,
+          20.0,
+          20.0,
+          20.1
+        ]
+      }
+    },
     "vaultcheck": {
-      "algorithm": "SHA-256",
-      "modification_detected": true
+      "snapshots": 2,
+      "unique_blobs": 3,
+      "file_references": 4,
+      "restored_content": {
+        "docs/note.txt": "changed",
+        "readme.txt": "hello"
+      }
+    },
+    "taskboard": {
+      "tasks": [
+        {
+          "id": "T1",
+          "title": "Livrer la recherche",
+          "owner": "alice",
+          "status": "review",
+          "version": 3
+        }
+      ],
+      "audit": [
+        {
+          "seq": 1,
+          "task_id": "T1",
+          "actor": "alice",
+          "action": "create",
+          "payload": "{\"action\": \"create\", \"actor\": \"alice\", \"id\": \"T1\", \"title\": \"Livrer la recherche\"}"
+        },
+        {
+          "seq": 2,
+          "task_id": "T1",
+          "actor": "alice",
+          "action": "transition",
+          "payload": "{\"action\": \"transition\", \"actor\": \"alice\", \"id\": \"T1\", \"status\": \"doing\", \"version\": 1}"
+        },
+        {
+          "seq": 3,
+          "task_id": "T1",
+          "actor": "alice",
+          "action": "transition",
+          "payload": "{\"action\": \"transition\", \"actor\": \"alice\", \"id\": \"T1\", \"status\": \"review\", \"version\": 2}"
+        }
+      ]
+    },
+    "roomguard": {
+      "bookings": [
+        {
+          "id": "R1",
+          "resource": "salle-A",
+          "owner": "alice",
+          "start": 1793606400.0,
+          "end": 1793610000.0,
+          "active": 1
+        },
+        {
+          "id": "R2",
+          "resource": "salle-A",
+          "owner": "bob",
+          "start": 1793610000.0,
+          "end": 1793613600.0,
+          "active": 1
+        }
+      ]
+    },
+    "ledgercore": {
+      "balances_minor_units": {
+        "capital": -100000,
+        "cash": 75000,
+        "equipment": 25000
+      },
+      "journals": 2
+    },
+    "flagforge": {
+      "evaluations": [
+        {
+          "flag": "new-search",
+          "subject": "alice",
+          "value": true,
+          "reason": "rule",
+          "rule": 0
+        },
+        {
+          "flag": "new-search",
+          "subject": "bob",
+          "value": false,
+          "reason": "default",
+          "bucket": 4287
+        },
+        {
+          "flag": "missing",
+          "subject": "alice",
+          "value": false,
+          "reason": "unknown_flag"
+        }
+      ]
+    },
+    "gatekeeper": {
+      "decisions": [
+        {
+          "client": "alice",
+          "at": 0.0,
+          "allowed": true,
+          "remaining": 1,
+          "retry_after": 0,
+          "reason": "accepted"
+        },
+        {
+          "client": "alice",
+          "at": 0.0,
+          "allowed": true,
+          "remaining": 0.0,
+          "retry_after": 0,
+          "reason": "accepted"
+        },
+        {
+          "client": "alice",
+          "at": 0.0,
+          "allowed": false,
+          "remaining": 0.0,
+          "retry_after": 1.0,
+          "reason": "rate_limited"
+        },
+        {
+          "client": "alice",
+          "at": 1.0,
+          "allowed": true,
+          "remaining": 0.0,
+          "retry_after": 0,
+          "reason": "accepted"
+        },
+        {
+          "client": "bob",
+          "at": 1.0,
+          "allowed": true,
+          "remaining": 1,
+          "retry_after": 0,
+          "reason": "accepted"
+        }
+      ]
+    },
+    "eventrail": {
+      "streams": {
+        "wallet-alice": {
+          "version": 2,
+          "chain_valid": true,
+          "balance": 70
+        }
+      }
+    },
+    "cachecraft": {
+      "values": [
+        1,
+        10
+      ],
+      "keys_lru_to_mru": [
+        "a"
+      ],
+      "weight": 1,
+      "stats": {
+        "hits": 1,
+        "misses": 1,
+        "loads": 1,
+        "evictions": 1
+      }
+    },
+    "jobforge": {
+      "jobs": [
+        {
+          "id": "mail-1",
+          "status": "done",
+          "attempts": 2,
+          "max_attempts": 3,
+          "available": 3.0,
+          "error": null
+        }
+      ]
+    },
+    "policylab": {
+      "decisions": [
+        {
+          "allowed": true,
+          "reason": "allow",
+          "expanded_roles": [
+            "editor",
+            "reader"
+          ],
+          "matched_rules": [
+            {
+              "rule": 1,
+              "effect": "allow"
+            }
+          ]
+        },
+        {
+          "allowed": false,
+          "reason": "explicit_deny",
+          "expanded_roles": [
+            "editor",
+            "reader"
+          ],
+          "matched_rules": [
+            {
+              "rule": 0,
+              "effect": "allow"
+            },
+            {
+              "rule": 2,
+              "effect": "deny"
+            }
+          ]
+        },
+        {
+          "allowed": false,
+          "reason": "default_deny",
+          "expanded_roles": [
+            "reader"
+          ],
+          "matched_rules": []
+        }
+      ]
+    },
+    "matchmaker": {
+      "assignments": {
+        "alice": "lab-B",
+        "bob": "lab-A",
+        "carol": "lab-B"
+      },
+      "accepted": {
+        "lab-A": [
+          "bob"
+        ],
+        "lab-B": [
+          "alice",
+          "carol"
+        ]
+      },
+      "proposals": 4,
+      "blocking_pairs": []
+    },
+    "learnlab": {
+      "train_samples": 6,
+      "test": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "log_loss": 0.15940511079413522,
+        "confusion": {
+          "tp": 1,
+          "tn": 1,
+          "fp": 0,
+          "fn": 0
+        },
+        "samples": 2
+      },
+      "model": {
+        "mean": [
+          -0.3333333333333333,
+          0.5
+        ],
+        "scale": [
+          2.560381915956203,
+          0.5
+        ],
+        "weights": [
+          3.1643185826199054,
+          -0.9814107395119486
+        ],
+        "bias": 0.054719114502984244
+      },
+      "probabilities": [
+        0.2643139046447648,
+        0.9882115650601089
+      ],
+      "labels": [
+        0,
+        1
+      ]
+    },
+    "huffpack": {
+      "original_bytes": 480,
+      "compressed_bytes": 206,
+      "round_trip": true,
+      "sha256": "654e3bf8f4e0603810e979e4f11b5372397f9f772ac9de360a7c4f0fac6d514b",
+      "payload_hex": "4846503100000000000001e00000000000000460654e3bf8f4e0603810e979e4f11b5372397f9f772ac9de360a7c4f0fac6d514b00062004610162036304640372034cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce4cf54ce",
+      "ratio": 0.4292
     }
   }
 }

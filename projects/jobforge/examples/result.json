@@ -1,0 +1,12 @@
+{
+  "jobs": [
+    {
+      "id": "mail-1",
+      "status": "done",
+      "attempts": 2,
+      "max_attempts": 3,
+      "available": 3.0,
+      "error": null
+    }
+  ]
+}

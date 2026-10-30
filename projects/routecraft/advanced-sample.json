@@ -1,0 +1,25 @@
+{
+  "graph": {
+    "campus": {
+      "gare": 4,
+      "centre": 9
+    },
+    "gare": {
+      "centre": -1
+    },
+    "centre": {}
+  },
+  "queries": [
+    {
+      "start": "campus",
+      "end": "centre"
+    },
+    {
+      "start": "campus",
+      "end": "centre",
+      "blocked": [
+        "gare"
+      ]
+    }
+  ]
+}

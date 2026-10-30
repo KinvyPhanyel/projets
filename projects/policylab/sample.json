@@ -1,0 +1,61 @@
+{
+  "roles": {
+    "reader": [],
+    "editor": [
+      "reader"
+    ]
+  },
+  "rules": [
+    {
+      "role": "reader",
+      "action": "read",
+      "resource": "docs/*",
+      "effect": "allow"
+    },
+    {
+      "role": "editor",
+      "action": "write",
+      "resource": "docs/*",
+      "effect": "allow",
+      "conditions": [
+        {
+          "attribute": "team",
+          "op": "eq",
+          "value": "engineering"
+        }
+      ]
+    },
+    {
+      "role": "*",
+      "action": "*",
+      "resource": "docs/secrets/*",
+      "effect": "deny"
+    }
+  ],
+  "requests": [
+    {
+      "roles": [
+        "editor"
+      ],
+      "action": "write",
+      "resource": "docs/spec",
+      "attributes": {
+        "team": "engineering"
+      }
+    },
+    {
+      "roles": [
+        "editor"
+      ],
+      "action": "read",
+      "resource": "docs/secrets/key"
+    },
+    {
+      "roles": [
+        "reader"
+      ],
+      "action": "write",
+      "resource": "docs/spec"
+    }
+  ]
+}

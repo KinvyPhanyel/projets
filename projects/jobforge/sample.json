@@ -1,0 +1,30 @@
+{
+  "commands": [
+    {
+      "action": "enqueue",
+      "id": "mail-1",
+      "payload": {
+        "template": "welcome"
+      }
+    },
+    {
+      "action": "claim",
+      "at": 0
+    },
+    {
+      "action": "finish",
+      "id": "mail-1",
+      "at": 1,
+      "error": "temporary_failure"
+    },
+    {
+      "action": "claim",
+      "at": 2
+    },
+    {
+      "action": "finish",
+      "id": "mail-1",
+      "at": 3
+    }
+  ]
+}

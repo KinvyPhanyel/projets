@@ -1,0 +1,9 @@
+{
+  "streams": {
+    "wallet-alice": {
+      "version": 2,
+      "chain_valid": true,
+      "balance": 70
+    }
+  }
+}

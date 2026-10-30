@@ -1,0 +1,16 @@
+{
+  "documents": {
+    "security": "La sécurité des données protège les systèmes.",
+    "pipeline": "Un pipeline de données valide les mesures.",
+    "network": "Le réseau transporte des données."
+  },
+  "queries": [
+    {
+      "text": "sécurité données",
+      "mode": "and"
+    },
+    {
+      "text": "\"de données\""
+    }
+  ]
+}

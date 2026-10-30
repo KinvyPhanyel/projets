@@ -1,0 +1,24 @@
+{
+  "operations": [
+    {
+      "id": "receipt-1",
+      "sku": "keyboard",
+      "quantity": 10,
+      "destination": "campus"
+    },
+    {
+      "id": "transfer-1",
+      "sku": "keyboard",
+      "quantity": 4,
+      "source": "campus",
+      "destination": "centre"
+    },
+    {
+      "id": "transfer-1",
+      "sku": "keyboard",
+      "quantity": 4,
+      "source": "campus",
+      "destination": "centre"
+    }
+  ]
+}

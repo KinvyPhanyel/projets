@@ -1,0 +1,20 @@
+{
+  "bookings": [
+    {
+      "id": "R1",
+      "resource": "salle-A",
+      "owner": "alice",
+      "start": 1793606400.0,
+      "end": 1793610000.0,
+      "active": 1
+    },
+    {
+      "id": "R2",
+      "resource": "salle-A",
+      "owner": "bob",
+      "start": 1793610000.0,
+      "end": 1793613600.0,
+      "active": 1
+    }
+  ]
+}

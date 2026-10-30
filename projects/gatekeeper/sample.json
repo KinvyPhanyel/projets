@@ -1,0 +1,26 @@
+{
+  "capacity": 2,
+  "rate": 1,
+  "events": [
+    {
+      "at": 0,
+      "client": "alice"
+    },
+    {
+      "at": 0,
+      "client": "alice"
+    },
+    {
+      "at": 0,
+      "client": "alice"
+    },
+    {
+      "at": 1,
+      "client": "alice"
+    },
+    {
+      "at": 1,
+      "client": "bob"
+    }
+  ]
+}

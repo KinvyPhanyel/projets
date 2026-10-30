@@ -1,0 +1,40 @@
+{
+  "events": [
+    {
+      "timestamp": "2026-10-30T10:00:00+00:00",
+      "ip": "192.0.2.10",
+      "user": "alice",
+      "status": "failed"
+    },
+    {
+      "timestamp": "2026-10-30T10:00:01+00:00",
+      "ip": "192.0.2.10",
+      "user": "bob",
+      "status": "failed"
+    },
+    {
+      "timestamp": "2026-10-30T10:00:02+00:00",
+      "ip": "192.0.2.10",
+      "user": "carol",
+      "status": "failed"
+    },
+    {
+      "timestamp": "2026-10-30T10:00:03+00:00",
+      "ip": "192.0.2.10",
+      "user": "alice",
+      "status": "failed"
+    },
+    {
+      "timestamp": "2026-10-30T10:00:04+00:00",
+      "ip": "192.0.2.10",
+      "user": "alice",
+      "status": "failed"
+    },
+    {
+      "timestamp": "2026-10-30T10:00:09Z",
+      "ip": "192.0.2.10",
+      "user": "alice",
+      "status": "success"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "assignments": {
+    "alice": "lab-B",
+    "bob": "lab-A",
+    "carol": "lab-B"
+  },
+  "accepted": {
+    "lab-A": [
+      "bob"
+    ],
+    "lab-B": [
+      "alice",
+      "carol"
+    ]
+  },
+  "proposals": 4,
+  "blocking_pairs": []
+}

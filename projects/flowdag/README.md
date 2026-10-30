@@ -1,35 +1,75 @@
 # FlowDAG
 
-Calculer l’ordre d’exécution d’un graphe de tâches et détecter les cycles.
+Exécution réelle des DAG avec concurrence bornée, reprises et distinction entre tâches échouées et ignorées.
 
-**Domaine :** Algorithmique et orchestration. **Statut :** démonstrateur pédagogique, Python 3.12+, bibliothèque standard uniquement.
+**Domaine :** Algorithmique et orchestration. **Prérequis :** Python 3.12+, bibliothèque standard. Aucun secret ni service cloud requis. Livrable pédagogique fonctionnel, sans revendication d'exploitation en production.
 
-## Exécution
+## Lancer le scénario complet
 
-Depuis `projects/flowdag` :
+Depuis la racine du dépôt :
 
 ```sh
-python3 app.py sample.json
+cd projects/flowdag
+python3 advanced.py --input advanced-sample.json
 ```
 
-Pour l’aide : `python3 app.py --help`.
+Le premier `app.py` reste disponible avec ses exemples initiaux. `advanced.py` ajoute les fonctions détaillées ci-dessous.
 
-## Architecture
+Le scénario est modifiable : copier `advanced-sample.json` vers un autre fichier puis passer son chemin à `--input`. Les résultats sont écrits en JSON sur la sortie standard. La CLI retourne 0 quand le scénario a été traité ; une décision métier négative peut être un résultat valide (par exemple denied, failed ou unhealthy). Une entrée invalide détectée par l'interface retourne 2.
 
-`app.py` contient l’algorithme et une interface CLI. Les fonctions métier peuvent être importées indépendamment. Les données d’exemple sont fictives. L’application ne nécessite aucun secret.
+## Ce qui est implémenté
 
-## À expliquer en entretien
+Voir [la conception détaillée](DESIGN.md) pour les invariants, l'algorithme, les transactions et les limites. Les fonctions sont utilisables directement en Python :
 
-Présenter le problème, suivre une entrée jusqu’au résultat et justifier la structure de données utilisée. Modifier les données pour explorer un cas limite. Le code généré est une base d’apprentissage à comprendre et personnaliser avant de le présenter comme une compétence acquise.
+- `execute(graph, handlers, max_workers=4, retries=0)`
+- `run(request, db=':memory:')`
+
+## Contrat d'entrée
+
+Le fichier [advanced-sample.json](advanced-sample.json) donne un exemple complet. Les champs suivants sont consommés au niveau racine :
+
+| Champ | Type | Structure de l'exemple |
+| --- | --- | --- |
+| `workers` | entier |  |
+| `retries` | entier |  |
+| `tasks` | objet | Clés de l’exemple : `a`, `b`, `total`, `failure`, `downstream` |
+
+Les listes de commandes sont traitées dans l'ordre. Les opérations prises en charge et leurs contraintes sont décrites dans DESIGN.md et le code du moteur. Le JSON est une donnée ; il n'est jamais passé à eval ou à un interpréteur de commandes.
+
+## État et répétabilité
+
+Ce projet travaille en mémoire ; `--db` est accepté par l’interface uniforme mais n’est pas utilisé. Aucun état ne survit à la fin du processus.
+
+## Résultat observé
+
+Voir [examples/result.json](examples/result.json), produit par l'exécution réelle du scénario lors de la validation globale. Pour PulseWatch, les ports temporaires et latences sont retirés de l'exemple sauvegardé ; les réponses réseau sont réellement vérifiées.
+
+## Vérifications métier
+
+```sh
+python3 -m unittest discover -v
+```
+
+Scénarios couverts :
+
+- dependency outputs.
+- retry and skip.
+- cycle rejected before handlers.
+
+Ces tests ciblent les propriétés livrées ; ils ne constituent ni un audit complet ni une mesure de charge. Le contrôle global du dépôt exécute également les CLI et les dix exemples initiaux.
+
+## Structure
+
+- `advanced.py` : interface CLI et moteur avancé.
+- `advanced-sample.json` : entrée de démonstration fictive.
+- `DESIGN.md` : décisions, invariants, coûts et compromis.
+- `test_*.py` : cas métier exécutables sans dépendances externes.
+- `examples/result.json` : sortie de référence de la démonstration.
 
 ## Limites
 
-Planificateur déterministe, sans exécution de commandes, parallélisme ou reprise après panne.
+Exécution dans un processus avec threads, sans reprise persistante, isolation des handlers ou annulation forcée.
 
-## Suite possible
+## Explorer dans le navigateur
 
-Ajouter des tests métier approfondis, une interface dédiée et des mesures sur un jeu de données représentatif. Consigner les résultats observés, sans annoncer de performances non mesurées.
-
-## Conception et résultat
-
-Voir [DESIGN.md](DESIGN.md) pour les choix techniques, le coût algorithmique, un exercice et un résultat vérifié.
+Depuis la racine du dépôt, `python3 automation/serve_lab.py` lance le laboratoire local sur le port 8080. Ouvrir le catalogue, déplier « Manipuler le scénario » puis modifier les données. Le laboratoire exécute ce même moteur ; les sondes PulseWatch y sont volontairement limitées aux cibles de démonstration locales.

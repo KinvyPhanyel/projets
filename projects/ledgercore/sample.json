@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "action": "post",
+      "id": "opening",
+      "entries": [
+        {
+          "account": "cash",
+          "amount": 100000
+        },
+        {
+          "account": "capital",
+          "amount": -100000
+        }
+      ]
+    },
+    {
+      "action": "post",
+      "id": "purchase",
+      "entries": [
+        {
+          "account": "equipment",
+          "amount": 25000
+        },
+        {
+          "account": "cash",
+          "amount": -25000
+        }
+      ]
+    }
+  ]
+}

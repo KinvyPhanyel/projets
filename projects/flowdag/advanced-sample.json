@@ -1,0 +1,30 @@
+{
+  "workers": 2,
+  "retries": 1,
+  "tasks": {
+    "a": {
+      "operation": "value",
+      "value": 3
+    },
+    "b": {
+      "operation": "value",
+      "value": 4
+    },
+    "total": {
+      "operation": "sum",
+      "depends_on": [
+        "a",
+        "b"
+      ]
+    },
+    "failure": {
+      "operation": "fail"
+    },
+    "downstream": {
+      "operation": "sum",
+      "depends_on": [
+        "failure"
+      ]
+    }
+  }
+}

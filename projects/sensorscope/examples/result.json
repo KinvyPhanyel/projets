@@ -1,0 +1,74 @@
+{
+  "points": [
+    {
+      "sensor": "room-A",
+      "value": 20.0,
+      "score": null,
+      "anomaly": false,
+      "state": "normal"
+    },
+    {
+      "sensor": "room-A",
+      "value": 20.1,
+      "score": null,
+      "anomaly": false,
+      "state": "normal"
+    },
+    {
+      "sensor": "room-A",
+      "value": 20.0,
+      "score": null,
+      "anomaly": false,
+      "state": "normal"
+    },
+    {
+      "sensor": "room-A",
+      "value": 50.0,
+      "score": 300.0,
+      "anomaly": true,
+      "state": "normal"
+    },
+    {
+      "sensor": "room-A",
+      "value": 51.0,
+      "score": 310.0,
+      "anomaly": true,
+      "state": "alert"
+    },
+    {
+      "sensor": "room-A",
+      "value": 20.0,
+      "score": 0.0,
+      "anomaly": false,
+      "state": "alert"
+    },
+    {
+      "sensor": "room-A",
+      "value": 20.1,
+      "score": 1.0,
+      "anomaly": false,
+      "state": "normal"
+    }
+  ],
+  "alerts": [
+    {
+      "sensor": "room-A",
+      "event": "opened",
+      "timestamp": "2026-10-30T10:00:04Z"
+    },
+    {
+      "sensor": "room-A",
+      "event": "recovered",
+      "timestamp": "2026-10-30T10:00:06Z"
+    }
+  ],
+  "baselines": {
+    "room-A": [
+      20.0,
+      20.1,
+      20.0,
+      20.0,
+      20.1
+    ]
+  }
+}

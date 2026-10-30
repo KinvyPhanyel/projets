@@ -1,0 +1,30 @@
+{
+  "candidates": {
+    "alice": [
+      "lab-A",
+      "lab-B"
+    ],
+    "bob": [
+      "lab-A",
+      "lab-B"
+    ],
+    "carol": [
+      "lab-B"
+    ]
+  },
+  "schools": {
+    "lab-A": [
+      "bob",
+      "alice"
+    ],
+    "lab-B": [
+      "alice",
+      "carol",
+      "bob"
+    ]
+  },
+  "capacities": {
+    "lab-A": 1,
+    "lab-B": 2
+  }
+}

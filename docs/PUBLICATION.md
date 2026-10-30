@@ -6,7 +6,7 @@ Un dépôt public expose les fichiers et leur historique. Le README explique l�
 
 Le dossier `site/` est un catalogue statique : il montre des descriptions et des sorties de démonstration enregistrées. Il peut être hébergé séparément du code. GitHub Pages convient à ces fichiers statiques ; il ne peut pas exécuter les applications Python. Sa disponibilité pour un dépôt privé dépend du plan GitHub.
 
-Une démonstration interactive avec saisie utilisateur nécessiterait une interface et une API supplémentaires. Les dix projets livrés ici sont des CLI ; ils s’exécutent dans un terminal Python. Le catalogue n’est pas présenté comme une application interactive de chacun des projets.
+Les 22 projets proposent une CLI et un laboratoire local avec scénarios JSON modifiables (`automation/serve_lab.py`). Ce serveur exécute les moteurs Python pour afficher leur résultat. Il reste réservé au développement local ; le publier demande une architecture adaptée, détaillée dans [LAB.md](LAB.md). Les applications ne possèdent pas encore chacune une interface métier graphique dédiée.
 
 ## Code privé, vitrine publique
 

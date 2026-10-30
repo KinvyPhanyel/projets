@@ -1,0 +1,33 @@
+{
+  "as_of": "2026-10-15",
+  "budgets": {
+    "transport": "15000",
+    "food": "25000"
+  },
+  "transactions": [
+    {
+      "date": "2026-10-01",
+      "kind": "income",
+      "category": "scholarship",
+      "amount": "100000"
+    },
+    {
+      "date": "2026-10-02",
+      "kind": "expense",
+      "category": "transport",
+      "amount": "5000"
+    },
+    {
+      "date": "2026-10-03",
+      "kind": "refund",
+      "category": "transport",
+      "amount": "1000"
+    },
+    {
+      "date": "2026-10-10",
+      "kind": "expense",
+      "category": "food",
+      "amount": "15000"
+    }
+  ]
+}

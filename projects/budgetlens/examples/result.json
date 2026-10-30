@@ -1,0 +1,26 @@
+{
+  "as_of": "2026-10-15",
+  "included_transactions": 4,
+  "income": "100000",
+  "net_expenses": "19000",
+  "cash_flow": "81000",
+  "categories": [
+    {
+      "category": "food",
+      "net_spent": "15000",
+      "limit": "25000",
+      "remaining": "10000",
+      "projected_month_end": "31000.00",
+      "over_budget": false
+    },
+    {
+      "category": "transport",
+      "net_spent": "4000",
+      "limit": "15000",
+      "remaining": "11000",
+      "projected_month_end": "8266.67",
+      "over_budget": false
+    }
+  ],
+  "projection_assumption": "constant average daily spending"
+}

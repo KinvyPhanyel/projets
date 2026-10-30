@@ -1,35 +1,73 @@
 # SensorScope
 
-Détecter des anomalies par médiane et écart absolu médian dans une série de capteurs.
+Détection par capteur sur fenêtres historiques, confirmation des alertes et récupération avec hystérésis.
 
-**Domaine :** IoT et statistiques. **Statut :** démonstrateur pédagogique, Python 3.12+, bibliothèque standard uniquement.
+**Domaine :** IoT et statistiques. **Prérequis :** Python 3.12+, bibliothèque standard. Aucun secret ni service cloud requis. Livrable pédagogique fonctionnel, sans revendication d'exploitation en production.
 
-## Exécution
+## Lancer le scénario complet
 
-Depuis `projects/sensorscope` :
+Depuis la racine du dépôt :
 
 ```sh
-python3 app.py sample.csv
+cd projects/sensorscope
+python3 advanced.py --input advanced-sample.json
 ```
 
-Pour l’aide : `python3 app.py --help`.
+Le premier `app.py` reste disponible avec ses exemples initiaux. `advanced.py` ajoute les fonctions détaillées ci-dessous.
 
-## Architecture
+Le scénario est modifiable : copier `advanced-sample.json` vers un autre fichier puis passer son chemin à `--input`. Les résultats sont écrits en JSON sur la sortie standard. La CLI retourne 0 quand le scénario a été traité ; une décision métier négative peut être un résultat valide (par exemple denied, failed ou unhealthy). Une entrée invalide détectée par l'interface retourne 2.
 
-`app.py` contient l’algorithme et une interface CLI. Les fonctions métier peuvent être importées indépendamment. Les données d’exemple sont fictives. L’application ne nécessite aucun secret.
+## Ce qui est implémenté
 
-## À expliquer en entretien
+Voir [la conception détaillée](DESIGN.md) pour les invariants, l'algorithme, les transactions et les limites. Les fonctions sont utilisables directement en Python :
 
-Présenter le problème, suivre une entrée jusqu’au résultat et justifier la structure de données utilisée. Modifier les données pour explorer un cas limite. Le code généré est une base d’apprentissage à comprendre et personnaliser avant de le présenter comme une compétence acquise.
+- `detect_stream(events, window=5, warmup=3, threshold=3.5, confirmation=2, recovery=2, min_scale=0.1)`
+- `run(request, db=':memory:')`
+
+## Contrat d'entrée
+
+Le fichier [advanced-sample.json](advanced-sample.json) donne un exemple complet. Les champs suivants sont consommés au niveau racine :
+
+| Champ | Type | Structure de l'exemple |
+| --- | --- | --- |
+| `events` | liste | Champs du premier élément : `sensor`, `timestamp`, `value` |
+
+Les listes de commandes sont traitées dans l'ordre. Les opérations prises en charge et leurs contraintes sont décrites dans DESIGN.md et le code du moteur. Le JSON est une donnée ; il n'est jamais passé à eval ou à un interpréteur de commandes.
+
+## État et répétabilité
+
+Ce projet travaille en mémoire ; `--db` est accepté par l’interface uniforme mais n’est pas utilisé. Aucun état ne survit à la fin du processus.
+
+## Résultat observé
+
+Voir [examples/result.json](examples/result.json), produit par l'exécution réelle du scénario lors de la validation globale. Pour PulseWatch, les ports temporaires et latences sont retirés de l'exemple sauvegardé ; les réponses réseau sont réellement vérifiées.
+
+## Vérifications métier
+
+```sh
+python3 -m unittest discover -v
+```
+
+Scénarios couverts :
+
+- open and recover.
+- sensor isolation.
+- duplicate timestamp rejected.
+
+Ces tests ciblent les propriétés livrées ; ils ne constituent ni un audit complet ni une mesure de charge. Le contrôle global du dépôt exécute également les CLI et les dix exemples initiaux.
+
+## Structure
+
+- `advanced.py` : interface CLI et moteur avancé.
+- `advanced-sample.json` : entrée de démonstration fictive.
+- `DESIGN.md` : décisions, invariants, coûts et compromis.
+- `test_*.py` : cas métier exécutables sans dépendances externes.
+- `examples/result.json` : sortie de référence de la démonstration.
 
 ## Limites
 
-Analyse statistique hors ligne, sans modèle entraîné ni validation clinique ou industrielle. Un contexte métier est nécessaire pour qualifier une anomalie.
+Détection statistique en mémoire ; pas de matériel IoT, MQTT, validation industrielle ou réapprentissage automatique.
 
-## Suite possible
+## Explorer dans le navigateur
 
-Ajouter des tests métier approfondis, une interface dédiée et des mesures sur un jeu de données représentatif. Consigner les résultats observés, sans annoncer de performances non mesurées.
-
-## Conception et résultat
-
-Voir [DESIGN.md](DESIGN.md) pour les choix techniques, le coût algorithmique, un exercice et un résultat vérifié.
+Depuis la racine du dépôt, `python3 automation/serve_lab.py` lance le laboratoire local sur le port 8080. Ouvrir le catalogue, déplier « Manipuler le scénario » puis modifier les données. Le laboratoire exécute ce même moteur ; les sondes PulseWatch y sont volontairement limitées aux cibles de démonstration locales.

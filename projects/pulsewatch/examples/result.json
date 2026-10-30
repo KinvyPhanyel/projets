@@ -1,0 +1,42 @@
+{
+  "targets": [
+    {
+      "url": "http://local-demo/",
+      "healthy": true,
+      "attempts": 1,
+      "history": [
+        {
+          "url": "http://local-demo/",
+          "status": 200,
+          "healthy": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "url": "http://local-demo/absent",
+      "healthy": false,
+      "attempts": 2,
+      "history": [
+        {
+          "url": "http://local-demo/absent",
+          "status": 404,
+          "healthy": false,
+          "error": "HTTP Error 404: File not found"
+        },
+        {
+          "url": "http://local-demo/absent",
+          "status": 404,
+          "healthy": false,
+          "error": "HTTP Error 404: File not found"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "healthy": 1,
+    "availability_snapshot": 0.5
+  },
+  "note": "Local HTTP checks; measured latencies omitted from reproducible examples."
+}

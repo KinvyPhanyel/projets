@@ -75,3 +75,14 @@ Seuils métier, saisonnalité, dérive, cas MAD nul et distinction entre anomali
 ## Limites du livrable
 
 Analyse statistique hors ligne, sans modèle entraîné ni validation clinique ou industrielle. Un contexte métier est nécessaire pour qualifier une anomalie.
+
+
+## Approfondissement implémenté
+
+Chaque mesure est comparée uniquement au passé de son capteur. La phase warmup remplit la référence sans signaler d'anomalie. Ensuite, médiane et MAD d'une fenêtre glissante donnent un score robuste ; min_scale fournit un plancher explicite lorsque la dispersion est presque nulle.
+
+Les points anormaux ne mettent pas à jour la référence, pour éviter qu'une pointe la contamine. confirmation anomalies consécutives ouvrent une alerte ; recovery observations normales la ferment. Cette hystérésis réduit les oscillations d'état. Les dates doivent être strictement croissantes par capteur et inclure un fuseau.
+
+Une dérive durable peut maintenir l'alerte indéfiniment puisque les anomalies sont exclues : un mécanisme de réapprentissage approuvé serait nécessaire. Les tests couvrent ouverture, récupération et isolation entre capteurs. Les états sont en mémoire, sans MQTT ni matériel physique.
+
+Les sections antérieures décrivent le premier `app.py`. Les fonctions de cette section sont livrées dans `advanced.py`.

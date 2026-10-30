@@ -1,0 +1,19 @@
+{
+  "snapshots": [
+    {
+      "id": "v1",
+      "files": {
+        "docs/note.txt": "original",
+        "readme.txt": "hello"
+      }
+    },
+    {
+      "id": "v2",
+      "files": {
+        "docs/note.txt": "changed",
+        "readme.txt": "hello"
+      }
+    }
+  ],
+  "read": "v2"
+}

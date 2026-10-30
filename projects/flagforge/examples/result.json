@@ -1,0 +1,24 @@
+{
+  "evaluations": [
+    {
+      "flag": "new-search",
+      "subject": "alice",
+      "value": true,
+      "reason": "rule",
+      "rule": 0
+    },
+    {
+      "flag": "new-search",
+      "subject": "bob",
+      "value": false,
+      "reason": "default",
+      "bucket": 4287
+    },
+    {
+      "flag": "missing",
+      "subject": "alice",
+      "value": false,
+      "reason": "unknown_flag"
+    }
+  ]
+}

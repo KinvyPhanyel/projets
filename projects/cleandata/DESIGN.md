@@ -64,3 +64,14 @@ Schémas, idempotence d’un lot, stockage des rejets et passage au traitement e
 ## Limites du livrable
 
 Traitement par lot en mémoire ; la première occurrence valide d’un identifiant est conservée.
+
+
+## Approfondissement implémenté
+
+Le schéma pilote quatre conversions : texte, nombre fini, entier strict et horodatage ISO. Les règles required, lowercase, min, max et choices sont appliquées avant de considérer une ligne acceptée. Une ligne peut porter plusieurs erreurs : la quarantaine ne s'arrête pas au premier champ invalide.
+
+La clé unique porte sur la valeur normalisée : A entouré d'espaces et a peuvent être identiques avec lowercase. Les clés ne sont mémorisées qu'après validation complète, pour qu'une ligne invalide ne réserve pas un identifiant.
+
+Le rapport sépare taux de validité et nombres d'erreurs par champ. Pour un lot vide, le taux est null, pas un succès à 100 %. Les sorties restent en mémoire : ce module n'est pas encore un pipeline streaming. Un schéma constitue une configuration de confiance et doit être versionné dans une intégration.
+
+Les sections antérieures décrivent le premier `app.py`. Les fonctions de cette section sont livrées dans `advanced.py`.

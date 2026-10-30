@@ -1,0 +1,8 @@
+{
+  "balances_minor_units": {
+    "capital": -100000,
+    "cash": 75000,
+    "equipment": 25000
+  },
+  "journals": 2
+}

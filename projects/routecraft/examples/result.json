@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "cost": 3,
+      "path": [
+        "campus",
+        "gare",
+        "centre"
+      ],
+      "passes": 2
+    },
+    {
+      "cost": 9,
+      "path": [
+        "campus",
+        "centre"
+      ],
+      "passes": 1
+    }
+  ]
+}

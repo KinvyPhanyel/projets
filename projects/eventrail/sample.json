@@ -1,0 +1,24 @@
+{
+  "batches": [
+    {
+      "stream": "wallet-alice",
+      "expected_version": 0,
+      "events": [
+        {
+          "type": "deposit",
+          "amount": 100
+        }
+      ]
+    },
+    {
+      "stream": "wallet-alice",
+      "expected_version": 1,
+      "events": [
+        {
+          "type": "withdraw",
+          "amount": 30
+        }
+      ]
+    }
+  ]
+}

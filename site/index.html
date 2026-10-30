@@ -3,17 +3,86 @@
 <title>Projets · Laboratoire informatique</title>
 <style>
 :root{color-scheme:dark;font:16px/1.6 system-ui;background:#0b1220;color:#e8eef8}body{max-width:1120px;margin:auto;padding:48px 24px}header{padding:30px 0 46px;border-bottom:1px solid #304157}h1{font-size:clamp(2.5rem,7vw,4.5rem);line-height:1.08;max-width:850px;margin:20px 0}p{color:#adbed4}label{display:block;margin:28px 0}input{width:min(90%,500px);padding:14px;background:#142138;color:inherit;border:1px solid #40536c;border-radius:8px}main{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}article{border:1px solid #304157;border-radius:12px;padding:24px;background:#101c2e}h2{margin:12px 0}small{color:#61dfbc}button,a{color:#8cbeff}button{background:#192e49;border:1px solid #40536c;padding:10px;cursor:pointer;border-radius:6px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.5 monospace;background:#08101d;padding:15px}footer{padding:40px 0}code{overflow-wrap:anywhere}.note{border-left:3px solid #61dfbc;padding-left:18px}
+textarea{display:block;box-sizing:border-box;width:100%;min-height:240px;background:#08101d;color:#e8eef8;border:1px solid #40536c;padding:12px;border-radius:6px;font:13px/1.5 monospace}details{margin:16px 0}summary{cursor:pointer}article a{display:inline-block;margin-right:14px}button:disabled{opacity:.5;cursor:wait}.feedback{overflow-wrap:anywhere}main{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}@media(max-width:430px){main{grid-template-columns:1fr}body{padding:24px 14px}}
 </style>
-<header><small>PORTFOLIO · GÉNIE INFORMATIQUE</small><h1>Dix problèmes.<br>Dix pistes à explorer.</h1><p>Cybersécurité, données, gestion et algorithmique : une collection de démonstrateurs Python autonomes, avec leurs entrées, leurs résultats et leurs limites.</p><p class="note">Bases pédagogiques générées avec assistance IA. Aucun projet n’est présenté comme une application de production ou une expérience professionnelle.</p></header>
+<header><small>PORTFOLIO · GÉNIE INFORMATIQUE</small><h1>22 projets.<br>Des mécanismes à explorer.</h1><p>Cybersécurité, données, gestion et algorithmique : des moteurs Python avec scénarios modifiables, transactions, concurrence, algorithmes et tests métier.</p><p class="note">Bases pédagogiques générées avec assistance IA. Aucun projet n’est présenté comme une application de production ou une expérience professionnelle.</p></header>
 <label>Explorer les projets <input id="search" type="search" placeholder="Rechercher : sécurité, données, gestion…"></label>
+<p class="note">Pour manipuler les scénarios : lancer <code>python3 automation/serve_lab.py</code> depuis le dépôt. Sur un hébergement statique, les résultats de référence restent consultables.</p>
 <p id="status" role="status">Chargement du catalogue…</p><main id="projects"></main>
-<footer>Python 3.12+ · Sans dépendances externes · Résultats enregistrés lors de vérifications locales, et non exécutés dans le navigateur.</footer>
+<footer>Python 3.12+ · Sans dépendances externes · Résultats de référence vérifiés. Le mode laboratoire exécute Python sur le serveur local ; le navigateur affiche et modifie les scénarios.</footer>
 <script>
-const container=document.querySelector('#projects'), status=document.querySelector('#status');
-let projects=[],results={};
-function el(tag,text){const node=document.createElement(tag);node.textContent=text;return node;}
-function render(){container.replaceChildren();const term=document.querySelector('#search').value.toLocaleLowerCase();const filtered=projects.filter(p=>[p.title,p.domain,p.description].join(' ').toLocaleLowerCase().includes(term));status.textContent=`${filtered.length} projet(s) · ${Object.keys(results).length} démonstrations vérifiées`;
-for(const p of filtered){const card=document.createElement('article');card.append(el('small',p.domain),el('h2',p.title),el('p',p.description),el('code',p.command));const details=document.createElement('details');details.append(el('summary','Résultat de démonstration'),el('pre',results[p.slug]?JSON.stringify(results[p.slug],null,2):'Résultat non disponible.'));const limits=document.createElement('details');limits.append(el('summary','Limites connues'),el('p',p.limits));card.append(details,limits);const source=el('a','Lire le code et le guide ↗');source.href='https://github.com/KinvyPhanyel/projets/tree/portfolio-projets/projects/'+encodeURIComponent(p.slug);card.append(source);container.append(card);}}
-Promise.all([fetch('projects.json').then(r=>{if(!r.ok)throw Error('Catalogue indisponible');return r.json()}),fetch('demo-results.json').then(r=>{if(!r.ok)throw Error('Résultats indisponibles');return r.json()})]).then(([p,r])=>{projects=p;results=r.results;render()}).catch(e=>status.textContent=e.message);
-document.querySelector('#search').addEventListener('input',render);
+const container = document.querySelector('#projects');
+const status = document.querySelector('#status');
+let projects = [], results = {}, scenarios = {};
+function el(tag, text) {
+  const node = document.createElement(tag);
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+async function execute(project, input, output, feedback, button) {
+  let scenario;
+  try { scenario = JSON.parse(input.value); }
+  catch { feedback.textContent = 'JSON invalide : vérifier les virgules et les guillemets.'; return; }
+  button.disabled = true;
+  feedback.textContent = 'Exécution locale en cours…';
+  try {
+    const response = await fetch('/api/run', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({project, scenario})
+    });
+    if (!response.headers.get('Content-Type')?.includes('application/json')) {
+      throw Error('Exécution indisponible ici. Lancer python3 automation/serve_lab.py puis ouvrir son catalogue local.');
+    }
+    const payload = await response.json();
+    if (!response.ok) throw Error(payload.error || 'Exécution refusée');
+    output.textContent = JSON.stringify(payload.result, null, 2);
+    feedback.textContent = 'Scénario traité. Consulter les états métier dans le résultat.';
+  } catch (error) { feedback.textContent = error.message; }
+  finally { button.disabled = false; }
+}
+function render() {
+  container.replaceChildren();
+  const term = document.querySelector('#search').value.toLocaleLowerCase();
+  const filtered = projects.filter(p => [p.title, p.domain, p.description].join(' ').toLocaleLowerCase().includes(term));
+  status.textContent = `${filtered.length} projet(s) · ${Object.keys(results).length} scénarios de référence vérifiés`;
+  for (const project of filtered) {
+    const card = el('article');
+    card.append(el('small', `${project.domain} · ${project.generation}`), el('h2', project.title),
+      el('p', project.description), el('code', project.command));
+    const recorded = el('details');
+    recorded.append(el('summary', 'Résultat de référence'), el('pre', JSON.stringify(results[project.slug] ?? 'Non disponible', null, 2)));
+    const lab = el('details');
+    lab.append(el('summary', 'Manipuler le scénario'));
+    const label = el('label', 'Scénario JSON');
+    const input = el('textarea');
+    input.value = JSON.stringify(scenarios[project.slug] ?? {}, null, 2);
+    input.spellcheck = false;
+    label.append(input);
+    const run = el('button', 'Exécuter localement');
+    const reset = el('button', 'Réinitialiser');
+    const feedback = el('p'); feedback.className = 'feedback'; feedback.setAttribute('role', 'status');
+    const output = el('pre', 'Le résultat apparaîtra ici.');
+    run.addEventListener('click', () => execute(project.slug, input, output, feedback, run));
+    reset.addEventListener('click', () => { input.value = JSON.stringify(scenarios[project.slug], null, 2); feedback.textContent = ''; });
+    lab.append(label, run, reset, feedback, output);
+    if (project.slug === 'pulsewatch') lab.append(el('p', 'Dans le laboratoire, les cibles réseau sont fixées au serveur local de démonstration.'));
+    const limits = el('details');
+    limits.append(el('summary', 'Limites connues'), el('p', project.limits));
+    card.append(recorded, lab, limits);
+    const base = 'https://github.com/KinvyPhanyel/projets/tree/portfolio-projets/projects/' + encodeURIComponent(project.slug);
+    const source = el('a', 'Code et guide ↗'); source.href = base;
+    const design = el('a', 'Conception ↗'); design.href = base + '/DESIGN.md';
+    card.append(source, design);
+    container.append(card);
+  }
+}
+async function loadJSON(file) {
+  const response = await fetch(file);
+  if (!response.ok) throw Error(`Fichier indisponible : ${file}`);
+  return response.json();
+}
+Promise.all([loadJSON('projects.json'), loadJSON('demo-results.json'), loadJSON('scenarios.json')])
+  .then(([catalogue, demos, inputs]) => { projects = catalogue; results = demos.results; scenarios = inputs; render(); })
+  .catch(error => status.textContent = error.message);
+document.querySelector('#search').addEventListener('input', render);
 </script></html>

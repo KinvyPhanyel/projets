@@ -1,37 +1,78 @@
 # PulseWatch
 
-Mesurer le statut et la latence d’une URL HTTP avec des délais bornés.
+Sondes multi-cibles concurrentes avec reprises bornées, historique des tentatives et agrégats de disponibilité instantanée.
 
-**Domaine :** Observabilité et réseau. **Statut :** démonstrateur pédagogique, Python 3.12+, bibliothèque standard uniquement.
+**Domaine :** Observabilité et réseau. **Prérequis :** Python 3.12+, bibliothèque standard. Aucun secret ni service cloud requis. Livrable pédagogique fonctionnel, sans revendication d'exploitation en production.
 
-## Exécution
+## Lancer le scénario complet
 
-Depuis `projects/pulsewatch` :
+Pour PulseWatch, lancer d’abord le catalogue sur le port 8080 dans un autre terminal. Une cible absente dans le scénario sert à illustrer un état en échec.
+
+Depuis la racine du dépôt :
 
 ```sh
-python3 app.py http://127.0.0.1:8080/
+cd projects/pulsewatch
+python3 advanced.py --input advanced-sample.json
 ```
 
-La commande suppose que le catalogue est déjà lancé depuis la racine du dépôt : `python3 -m http.server 8080 --bind 127.0.0.1 --directory site`. Une URL inaccessible produit un résultat en erreur et un code de sortie 1.
+Le premier `app.py` reste disponible avec ses exemples initiaux. `advanced.py` ajoute les fonctions détaillées ci-dessous.
 
-Pour l’aide : `python3 app.py --help`.
+Le scénario est modifiable : copier `advanced-sample.json` vers un autre fichier puis passer son chemin à `--input`. Les résultats sont écrits en JSON sur la sortie standard. La CLI retourne 0 quand le scénario a été traité ; une décision métier négative peut être un résultat valide (par exemple denied, failed ou unhealthy). Une entrée invalide détectée par l'interface retourne 2.
 
-## Architecture
+## Ce qui est implémenté
 
-`app.py` contient l’algorithme et une interface CLI. Les fonctions métier peuvent être importées indépendamment. Les données d’exemple sont fictives. L’application ne nécessite aucun secret.
+Voir [la conception détaillée](DESIGN.md) pour les invariants, l'algorithme, les transactions et les limites. Les fonctions sont utilisables directement en Python :
 
-## À expliquer en entretien
+- `monitor(targets, attempts=2, workers=4, timeout=2, delay=0.05, probe_fn=probe, sleep=time.sleep)`
+- `run(request, db=':memory:')`
 
-Présenter le problème, suivre une entrée jusqu’au résultat et justifier la structure de données utilisée. Modifier les données pour explorer un cas limite. Le code généré est une base d’apprentissage à comprendre et personnaliser avant de le présenter comme une compétence acquise.
+## Contrat d'entrée
+
+Le fichier [advanced-sample.json](advanced-sample.json) donne un exemple complet. Les champs suivants sont consommés au niveau racine :
+
+| Champ | Type | Structure de l'exemple |
+| --- | --- | --- |
+| `targets` | liste |  |
+| `attempts` | entier |  |
+| `workers` | entier |  |
+| `timeout` | entier |  |
+
+Les listes de commandes sont traitées dans l'ordre. Les opérations prises en charge et leurs contraintes sont décrites dans DESIGN.md et le code du moteur. Le JSON est une donnée ; il n'est jamais passé à eval ou à un interpréteur de commandes.
+
+## État et répétabilité
+
+Ce projet travaille en mémoire ; `--db` est accepté par l’interface uniforme mais n’est pas utilisé. Aucun état ne survit à la fin du processus.
+
+## Résultat observé
+
+Voir [examples/result.json](examples/result.json), produit par l'exécution réelle du scénario lors de la validation globale. Pour PulseWatch, les ports temporaires et latences sont retirés de l'exemple sauvegardé ; les réponses réseau sont réellement vérifiées.
+
+## Vérifications métier
+
+```sh
+python3 -m unittest discover -v
+```
+
+Scénarios couverts :
+
+- retry recovers and preserves order.
+- no retry after success.
+- invalid parameters.
+
+Ces tests ciblent les propriétés livrées ; ils ne constituent ni un audit complet ni une mesure de charge. Le contrôle global du dépôt exécute également les CLI et les dix exemples initiaux.
+
+## Structure
+
+- `advanced.py` : interface CLI et moteur avancé.
+- `advanced-sample.json` : entrée de démonstration fictive.
+- `DESIGN.md` : décisions, invariants, coûts et compromis.
+- `test_*.py` : cas métier exécutables sans dépendances externes.
+- `examples/result.json` : sortie de référence de la démonstration.
 
 ## Limites
 
-À utiliser sur des services autorisés. CLI locale, pas une API publique : n’exposez pas une sonde acceptant des URL arbitraires sans protection SSRF. Certains serveurs refusent HEAD.
+CLI et sondes locales ; pas de supervision permanente, SLO historique ou API de sondage public.
 
-## Suite possible
+## Explorer dans le navigateur
 
-Ajouter des tests métier approfondis, une interface dédiée et des mesures sur un jeu de données représentatif. Consigner les résultats observés, sans annoncer de performances non mesurées.
-
-## Conception et résultat
-
-Voir [DESIGN.md](DESIGN.md) pour les choix techniques, le coût algorithmique, un exercice et un résultat vérifié.
+Depuis la racine du dépôt, `python3 automation/serve_lab.py` lance le laboratoire local sur le port 8080. Ouvrir le catalogue, déplier « Manipuler le scénario » puis modifier les données. Le laboratoire exécute ce même moteur ; les sondes PulseWatch y sont volontairement limitées aux cibles de démonstration locales.

@@ -31,3 +31,14 @@ SLO, disponibilité, refus HEAD, politique de redirection, SSRF et distinction e
 ## Limites du livrable
 
 À utiliser sur des services autorisés. CLI locale, pas une API publique : n’exposez pas une sonde acceptant des URL arbitraires sans protection SSRF. Certains serveurs refusent HEAD.
+
+
+## Approfondissement implémenté
+
+Un ThreadPoolExecutor borne le nombre de sondes simultanées. Chaque cible possède un historique de tentatives et un backoff exponentiel limité à cinq essais. La réussite arrête ses tentatives ; les autres cibles continuent indépendamment. L'ordre des résultats suit celui des entrées.
+
+L'agrégat décrit une observation instantanée : proportion de cibles saines et p95 par rang le plus proche des latences finales. Ce n'est pas un SLO temporel ; deux cibles ne suffisent pas pour une statistique représentative. Les tests injectent une sonde contrôlée sans dépendre d'Internet et testent une récupération à la seconde tentative.
+
+Le scénario avancé attend le serveur de catalogue sur le port 8080 ; une cible volontairement absente illustre l'erreur. Les contrôles réseau restent locaux au développement. Pas d'API publique acceptant des URL, de planificateur périodique ou de stockage des séries temporelles.
+
+Les sections antérieures décrivent le premier `app.py`. Les fonctions de cette section sont livrées dans `advanced.py`.

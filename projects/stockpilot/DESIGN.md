@@ -31,3 +31,14 @@ Transactions concurrentes, inventaire initial, corrections auditables et limite 
 ## Limites du livrable
 
 Prototype local sans authentification ni gestion multi-entrepôts. Chaque répétition de move ajoute un mouvement.
+
+
+## Approfondissement implémenté
+
+Warehouse sépare les soldes par clé (entrepôt, SKU). Une réception augmente un entrepôt ; un transfert augmente la destination et diminue la source au sein de la même transaction BEGIN IMMEDIATE. Si la source manque de stock, même la première mise à jour de destination est annulée.
+
+Les clés d'opération conservent un contenu canonique : un rejeu identique retourne False, un contenu différent est rejeté. Les mouvements d'audit et la clé sont enregistrés dans la transaction. Les transferts préservent donc le total par SKU ; les réceptions l'augmentent.
+
+Le schéma avancé est indépendant des tables du premier app.py et utilise un nouveau fichier via --db si souhaité. Les tests couvrent rejeu, divergence de contenu et rollback d'un transfert insuffisant. Pas de réservation de stock, d'unités fractionnaires, de fournisseurs ou de valorisation comptable.
+
+Les sections antérieures décrivent le premier `app.py`. Les fonctions de cette section sont livrées dans `advanced.py`.
