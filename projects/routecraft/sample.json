@@ -1,0 +1,10 @@
+{
+  "campus": {
+    "gare": 4,
+    "centre": 9
+  },
+  "gare": {
+    "centre": 2
+  },
+  "centre": {}
+}

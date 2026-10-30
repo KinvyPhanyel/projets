@@ -1,0 +1,146 @@
+{
+  "status": "passed",
+  "projects_checked": 10,
+  "results": {
+    "sentinel-log": [
+      {
+        "ip": "192.0.2.10",
+        "user": "demo",
+        "attempts": 3,
+        "timestamp": "2026-10-30T10:00:02+00:00",
+        "rule": "repeated_auth_failure"
+      }
+    ],
+    "stockpilot": {
+      "sku": "keyboard",
+      "quantity": 3,
+      "rejected_overdraft": true
+    },
+    "budgetlens": [
+      {
+        "category": "transport",
+        "spent": "2500.30",
+        "limit": "2000",
+        "over_budget": true
+      }
+    ],
+    "docuindex": [
+      {
+        "document": "security.txt",
+        "score": 0.156163
+      }
+    ],
+    "cleandata": {
+      "accepted": [
+        {
+          "id": "a",
+          "timestamp": "2026-10-30T10:00:00",
+          "value": 21.5
+        },
+        {
+          "id": "c",
+          "timestamp": "2026-10-30T12:00:00",
+          "value": 23.0
+        }
+      ],
+      "rejected": [
+        {
+          "line": 3,
+          "reason": "identifiant dupliqué",
+          "row": {
+            "id": "a",
+            "timestamp": "2026-10-30T11:00:00",
+            "value": "22"
+          }
+        },
+        {
+          "line": 4,
+          "reason": "Invalid isoformat string: 'invalid'",
+          "row": {
+            "id": "b",
+            "timestamp": "invalid",
+            "value": "10"
+          }
+        }
+      ],
+      "counts": {
+        "accepted": 2,
+        "rejected": 2
+      }
+    },
+    "pulsewatch": {
+      "healthy_status": 200,
+      "unhealthy_status": 503,
+      "both_cases_checked": true
+    },
+    "flowdag": {
+      "order": [
+        "extract",
+        "validate",
+        "report"
+      ],
+      "cycle_rejected": true
+    },
+    "routecraft": {
+      "cost": 6,
+      "path": [
+        "campus",
+        "gare",
+        "centre"
+      ]
+    },
+    "sensorscope": {
+      "median": 21,
+      "mad": 1,
+      "zero_mad_policy": "flag values different from median",
+      "points": [
+        {
+          "index": 0,
+          "value": 20,
+          "score": 0.6745,
+          "anomaly": false
+        },
+        {
+          "index": 1,
+          "value": 21,
+          "score": 0.0,
+          "anomaly": false
+        },
+        {
+          "index": 2,
+          "value": 20,
+          "score": 0.6745,
+          "anomaly": false
+        },
+        {
+          "index": 3,
+          "value": 22,
+          "score": 0.6745,
+          "anomaly": false
+        },
+        {
+          "index": 4,
+          "value": 21,
+          "score": 0.0,
+          "anomaly": false
+        },
+        {
+          "index": 5,
+          "value": 85,
+          "score": 43.1673,
+          "anomaly": true
+        },
+        {
+          "index": 6,
+          "value": 20,
+          "score": 0.6745,
+          "anomaly": false
+        }
+      ]
+    },
+    "vaultcheck": {
+      "algorithm": "SHA-256",
+      "modification_detected": true
+    }
+  }
+}

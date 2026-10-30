@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "sentinel-log",
+    "title": "Sentinel Log",
+    "domain": "Cybersécurité",
+    "description": "Détecter les échecs de connexion répétés dans des journaux JSONL.",
+    "command": "python3 app.py sample.jsonl",
+    "limits": "Les règles sont heuristiques. Aucun blocage réseau ni collecte de secrets. Les événements doivent avoir des horodatages compatibles."
+  },
+  {
+    "slug": "stockpilot",
+    "title": "StockPilot",
+    "domain": "Gestion et bases de données",
+    "description": "Gérer un stock SQLite avec journal de mouvements et prévention des sorties impossibles.",
+    "command": "python3 app.py --db /tmp/stockpilot-demo.db move clavier 5",
+    "limits": "Prototype local sans authentification ni gestion multi-entrepôts. Chaque répétition de move ajoute un mouvement."
+  },
+  {
+    "slug": "budgetlens",
+    "title": "BudgetLens",
+    "domain": "Finance personnelle",
+    "description": "Analyser des dépenses CSV avec des montants décimaux exacts et des plafonds par catégorie.",
+    "command": "python3 app.py sample.csv",
+    "limits": "Montants dans une seule devise choisie par l’utilisateur ; pas de connexion bancaire ni de conseil financier."
+  },
+  {
+    "slug": "docuindex",
+    "title": "DocuIndex",
+    "domain": "Recherche et traitement du texte",
+    "description": "Indexer des documents locaux et classer les résultats avec un score TF-IDF.",
+    "command": "python3 app.py documents \"sécurité données\"",
+    "limits": "Recherche lexicale explicable, sans LLM, embeddings ou compréhension sémantique. Charge les documents en mémoire."
+  },
+  {
+    "slug": "cleandata",
+    "title": "CleanData",
+    "domain": "Ingénierie des données",
+    "description": "Valider et dédupliquer un fichier de mesures, en isolant chaque ligne rejetée.",
+    "command": "python3 app.py sample.csv",
+    "limits": "Traitement par lot en mémoire ; la première occurrence valide d’un identifiant est conservée."
+  },
+  {
+    "slug": "pulsewatch",
+    "title": "PulseWatch",
+    "domain": "Observabilité et réseau",
+    "description": "Mesurer le statut et la latence d’une URL HTTP avec des délais bornés.",
+    "command": "python3 app.py http://127.0.0.1:8080/",
+    "limits": "À utiliser sur des services autorisés. CLI locale, pas une API publique : n’exposez pas une sonde acceptant des URL arbitraires sans protection SSRF. Certains serveurs refusent HEAD."
+  },
+  {
+    "slug": "flowdag",
+    "title": "FlowDAG",
+    "domain": "Algorithmique et orchestration",
+    "description": "Calculer l’ordre d’exécution d’un graphe de tâches et détecter les cycles.",
+    "command": "python3 app.py sample.json",
+    "limits": "Planificateur déterministe, sans exécution de commandes, parallélisme ou reprise après panne."
+  },
+  {
+    "slug": "routecraft",
+    "title": "RouteCraft",
+    "domain": "Optimisation et logistique",
+    "description": "Trouver un chemin de coût minimal avec l’algorithme de Dijkstra.",
+    "command": "python3 app.py sample.json campus centre",
+    "limits": "Graphe orienté fourni manuellement ; pas de données cartographiques, de trafic ni de distances réelles."
+  },
+  {
+    "slug": "sensorscope",
+    "title": "SensorScope",
+    "domain": "IoT et statistiques",
+    "description": "Détecter des anomalies par médiane et écart absolu médian dans une série de capteurs.",
+    "command": "python3 app.py sample.csv",
+    "limits": "Analyse statistique hors ligne, sans modèle entraîné ni validation clinique ou industrielle. Un contexte métier est nécessaire pour qualifier une anomalie."
+  },
+  {
+    "slug": "vaultcheck",
+    "title": "VaultCheck",
+    "domain": "Intégrité et sauvegardes",
+    "description": "Créer et vérifier un manifeste SHA-256 de fichiers locaux.",
+    "command": "python3 app.py create documents /tmp/vaultcheck-demo.json",
+    "limits": "SHA-256 détecte les modifications mais ne chiffre et ne signe pas les fichiers. Conserver le manifeste en lieu sûr. Les liens symboliques sont ignorés ; fichiers supposés stables pendant la lecture."
+  }
+]

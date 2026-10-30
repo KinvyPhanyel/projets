@@ -1,0 +1,1 @@
+Un pipeline de données valide et transforme des mesures.

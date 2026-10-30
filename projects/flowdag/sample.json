@@ -1,0 +1,12 @@
+{
+  "extract": [],
+  "validate": [
+    "extract"
+  ],
+  "transform": [
+    "validate"
+  ],
+  "report": [
+    "transform"
+  ]
+}
